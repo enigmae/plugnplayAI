@@ -1,3 +1,21 @@
+# Transcribe
+
+Using AssemblyAI's API
+```shell
+(env) $ python transcriptor.py samples/audio_7sec.mp3 --local --api_key b2bcc06df08d4245950139b798fd5e36 
+```
+
+
+# FastAPI
+
+Run the FastAPI
+```shell
+(env) $ uvicorn api:app --host 0.0.0.0 --port 8080 --reload
+```
+
+The swagger should be running at http://0.0.0.0:8080/docs
+
+
 # Real-time transcription from microphone
 
 Transcribing in real-time is a super skill only court reporters can brag about. But luckily, we don’t need to learn how to type fast to get transcriptions of audio quickly. Thanks to Assembly AI’s real-time speech recognition end point, it is very simple to set up a python script that can listen for audio and turn it to text.
