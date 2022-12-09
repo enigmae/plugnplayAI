@@ -2,8 +2,18 @@
 
 Using AssemblyAI's API
 ```shell
-(env) $ python transcribe.py samples/audio_7sec.mp3 --local --api_key b2bcc06df08d4245950139b798fd5e36 
+(env) $ python transcriptor.py samples/audio_7sec.mp3 --local --api_key b2bcc06df08d4245950139b798fd5e36 
 ```
+
+
+# FastAPI
+
+Run the FastAPI
+```shell
+(env) $ uvicorn api:app --host 0.0.0.0 --port 8080 --reload
+```
+
+The swagger should be running at http://0.0.0.0:8080/docs
 
 
 # Real-time transcription from microphone
