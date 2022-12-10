@@ -1,9 +1,8 @@
 # plugnplayAI
 
 
-# Run it
+# Backend
 
-Backend
 ```shell
 $ sudo apt install python3-virtualenv
 $ virtualenv env
@@ -17,7 +16,8 @@ The swagger should be running at http://localhost:8080/docs
 Public endpoint running on an EC2 instance: http://3.67.97.55/docs
 
 
-Frontend
+# Frontend
+
 ```
 $ npm install
 $ npm start
