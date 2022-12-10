@@ -1,15 +1,19 @@
 import { useCallback, useEffect, useState } from 'react';
 import { Handle, Position, useEdges } from 'reactflow';
-import { Button, Group, Loader, LoadingOverlay, Text, Textarea, TextInput } from '@mantine/core';
+import { Button, Group, Loader, Text, Textarea, TextInput } from '@mantine/core';
 import axiosInstance from '../../../services/axiosInstance';
+import { useApp } from '../../../context/AppContext';
 
-function SpeechToTextNode({ data }) {
+function SpeechToTextNode({ data, id }) {
+    const { setAppState } = useApp()
     const { model } = data;
     const baseColor = model.color;
     const handleSize = 15;
 
     const [loading, setLoading] = useState(false);
-    const [responseData, setResponseData] = useState(null);
+    const [responseText, setResponseText] = useState(null);
+
+    const edges = useEdges();
 
     useEffect(() => {
         console.log(data)
@@ -30,7 +34,38 @@ function SpeechToTextNode({ data }) {
         })
 
         setLoading(false);
-        setResponseData(response.data);
+        setResponseText(response.data);
+    }
+
+    useEffect(() => {
+        if (responseText) {
+            let outgoingEdges = edges.find(edg => edg.source === id);
+            outgoingEdges && handleTextInput(outgoingEdges)
+        }
+    }, [responseText]);
+
+    const handleTextInput = (params) => {
+        const { target } = params
+        setAppState(prevState => {
+            let targetNode = prevState.nodes.find(node => node.id === target);
+            let restNodes = prevState.nodes.filter(node => node.id !== target);
+
+            targetNode = {
+                ...targetNode,
+                data: {
+                    ...targetNode.data,
+                    sourceData: responseText
+                }
+            }
+
+            return ({
+                ...prevState,
+                nodes: [
+                    ...restNodes,
+                    targetNode
+                ]
+            })
+        })
     }
 
     return (
@@ -63,12 +98,12 @@ function SpeechToTextNode({ data }) {
                         {loading ? <Loader variant="bars" size="xs" color='yellow' /> : 'Apply'}
                     </Button>
                 </div>
-                {responseData && (
+                {responseText && (
                     <div style={{ padding: 10 }}>
                         <Textarea
                             minRows={5}
-                            value={responseData}
-                            onChange={(ev) => setResponseData(ev.target.value)}
+                            value={responseText}
+                            onChange={(ev) => setResponseText(ev.target.value)}
                         />
                     </div>
                 )}
@@ -77,7 +112,7 @@ function SpeechToTextNode({ data }) {
                 type="source"
                 position={Position.Right}
                 style={{ width: handleSize, height: handleSize }}
-                onConnect={(params) => console.log('handle onConnect', params)}
+                onConnect={(params) => handleTextInput(params)}
             />
         </>
     );
