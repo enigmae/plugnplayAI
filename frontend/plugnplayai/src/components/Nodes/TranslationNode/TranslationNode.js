@@ -19,19 +19,24 @@ function TranslationNode({ data }) {
     const processTranslate = async () => {
         setLoading(true);
 
-        const form = new FormData();
-        const blob = new Blob([data.sourceData], { type: 'text/plain' })
-        form.append('text_file', blob);
-
-        const response = await axiosInstance.post('/translate', form, {
+        const response = await axiosInstance.post('/translate', null, {
+            params: {
+                text_file: data.sourceData,
+                language: 'german'
+            },
+            responseType: 'arraybuffer',
             headers: {
                 'accept': 'application/json',
-                'Content-Type': 'multipart/form-data'
+                'content-type': 'application/x-www-form-urlencoded'
             }
         })
 
+        var enc = new TextDecoder("utf-8");
+        var arr = new Uint8Array(response.data);
+
         setLoading(false);
-        setResponseData(response.data);
+        console.log(enc.decode(arr));
+        setResponseData(enc.decode(arr));
     }
 
     return (
