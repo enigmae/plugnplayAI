@@ -1,3 +1,4 @@
+"""
 from pyChatGPT import Chat, Options
 
 
@@ -7,3 +8,4 @@ def ask(question: str):
     chat = Chat(email="arijit.das@selfsupervised.de", password="5aLpF:zmY7V4T39", options=options)
     answer, _, _ = chat.ask(question)
     return answer
+"""
