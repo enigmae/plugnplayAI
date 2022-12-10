@@ -9,4 +9,4 @@ def translate(text: str, api_key: str):
     # Request a translation
     response = requests.post(API_URL, headers=headers, json=input)
 
-    return response.json()["translation_text"]
+    return response.json()[0]['translation_text']
