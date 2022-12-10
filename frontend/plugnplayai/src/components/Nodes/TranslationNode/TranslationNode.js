@@ -20,7 +20,8 @@ function TranslationNode({ data }) {
         setLoading(true);
 
         const form = new FormData();
-        form.append('text_file', data.sourceData);
+        const blob = new Blob([data.sourceData], { type: 'text/plain' })
+        form.append('text_file', blob);
 
         const response = await axiosInstance.post('/translate', form, {
             headers: {
