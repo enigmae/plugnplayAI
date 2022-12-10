@@ -34,7 +34,7 @@ async def transcribe(audio_mp3: UploadFile):
     return _transcribe(audio_mp3.file.read(), api_key)
 
 
-@app.post("/translator", response_model=str)
+@app.post("/translate", response_model=str)
 async def translate(text_file: UploadFile):
     """
     Translate some text.
