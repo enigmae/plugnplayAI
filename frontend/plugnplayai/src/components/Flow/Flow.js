@@ -2,10 +2,9 @@ import { Button, Text } from '@mantine/core';
 import { useState, useCallback } from 'react';
 import ReactFlow, { addEdge, Controls, Background, applyNodeChanges, applyEdgeChanges } from 'reactflow';
 import 'reactflow/dist/style.css';
-import { AlphabetGreek, ClipboardText, MessageChatbot, Microphone2, Mountain, TextRecognition } from 'tabler-icons-react';
+import { AlphabetGreek, ClipboardText, FileText, MessageChatbot, Microphone, Microphone2, Mountain, TextRecognition } from 'tabler-icons-react';
 import uuid from 'react-uuid';
-import { ConversationalNode, SpeechToTextNode, SummarizationNode, TextToImageNode, TranslationNode } from '../Nodes';
-
+import { ConversationalNode, SpeechInputNode, SpeechToTextNode, SummarizationNode, TextInputNode, TextToImageNode, TranslationNode } from '../Nodes';
 
 const ModelNodes = [
     {
@@ -60,6 +59,29 @@ const ModelNodes = [
     }
 ]
 
+const InputNodes = [
+    {
+        name: "Speech Input",
+        type: 'SpeechInput',
+        color: '#ffaa00',
+        icon: <Microphone
+            size={25}
+            strokeWidth={1.5}
+            color={'#ffaa00'}
+        />
+    },
+    {
+        name: "Text Input",
+        type: 'TextInput',
+        color: '#7dd279',
+        icon: <FileText
+            size={25}
+            strokeWidth={1.5}
+            color={'#7dd279'}
+        />
+    },
+]
+
 const initialNodes = [
     {
         id: '1',
@@ -93,11 +115,16 @@ const initialNodes = [
 ];
 
 const nodeTypes = {
+    // Model Nodes
     SpeechToText: SpeechToTextNode,
     Translation: TranslationNode,
     TextToImage: TextToImageNode,
     Conversational: ConversationalNode,
     Summarization: SummarizationNode,
+
+    // Input Nodes
+    TextInput: TextInputNode,
+    SpeechInput: SpeechInputNode
 };
 
 const initialEdges = [{ id: '1-2', source: '1', target: '2', label: 'there', animated: true, style: { stroke: 'black', strokeWidth: 2 }, }];
@@ -164,6 +191,22 @@ function Flow() {
                     </div>
                     <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'flex-start' }}>
                         {ModelNodes.map((model, index) => {
+                            return (
+                                <ModelButton
+                                    key={index}
+                                    model={model}
+                                />
+                            )
+                        })}
+                    </div>
+                    <div style={{ display: 'flex', justifyContent: 'center', paddingTop: 10, paddingBottom: 10 }}>
+                        <div style={{ width: 200, borderTop: '1px solid #afafaf' }}></div>
+                    </div>
+                    <div style={{ color: '#333333', fontSize: 25, textAlign: 'center' }}>
+                        Input Nodes
+                    </div>
+                    <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'flex-start' }}>
+                        {InputNodes.map((model, index) => {
                             return (
                                 <ModelButton
                                     key={index}
