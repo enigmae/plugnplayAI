@@ -14,6 +14,8 @@ $ source env/bin/activate
 ```
 The swagger should be running at http://localhost:8080/docs
 
+Public endpoint running on an EC2 instance: http://3.67.97.55/docs
+
 
 Frontend
 ```
