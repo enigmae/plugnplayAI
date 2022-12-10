@@ -1,6 +1,6 @@
 from fastapi import FastAPI, UploadFile
 from transcriptor import transcribe as _transcribe
-from translator import translate as _translate
+from text2text_transformer import T5_Transformer
 
 from fastapi.middleware.cors import CORSMiddleware
 
@@ -40,4 +40,15 @@ async def translate(text_file: UploadFile):
     Translate some text.
     """
     api_key = "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"  # TODO pass this token as a secret
-    return _translate(text_file.file.read().decode(), api_key)
+    prefix = "translate English to German: "
+    return T5_Transformer(prefix + text_file.file.read().decode(), api_key)
+
+
+@app.post("/summarize", response_model=str)
+async def summarize(text_file: UploadFile):
+    """
+    Translate some text.
+    """
+    api_key = "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"  # TODO pass this token as a secret
+    prefix = "summarize: "
+    return T5_Transformer(prefix + text_file.file.read().decode(), api_key)

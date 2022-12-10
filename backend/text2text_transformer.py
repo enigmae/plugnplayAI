@@ -1,7 +1,7 @@
 import requests
 
 
-def translate(text: str, api_key: str):
+def T5_Transformer(text: str, api_key: str):
     API_URL = "https://api-inference.huggingface.co/models/t5-large"
     headers = {"Authorization": "Bearer " + api_key}
     input = {'inputs': text}
@@ -9,4 +9,4 @@ def translate(text: str, api_key: str):
     # Request a translation
     response = requests.post(API_URL, headers=headers, json=input)
 
-    return response.json()[0]['translation_text']
+    return response.json()
