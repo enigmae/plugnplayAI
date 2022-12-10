@@ -1,6 +1,7 @@
-from fastapi import FastAPI, UploadFile
+from fastapi import FastAPI, Response, UploadFile
 from transcriptor import transcribe as _transcribe
 from text2text_transformer import T5_Transformer
+from image_generator import generate_image as _generate_image
 
 from fastapi.middleware.cors import CORSMiddleware
 
@@ -47,8 +48,18 @@ async def translate(text_file: UploadFile):
 @app.post("/summarize", response_model=str)
 async def summarize(text_file: UploadFile):
     """
-    Translate some text.
+    Summarize some text.
     """
     api_key = "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"  # TODO pass this token as a secret
     prefix = "summarize: "
     return T5_Transformer(prefix + text_file.file.read().decode(), api_key)
+
+
+@app.post("/generate_image")
+async def generate_image(prompt: str):
+    """
+    Generate an image from some text.
+    """
+    api_key = 'sk-3DEERMlkvdTymBFocEI9uGlEV610ro1hL3MgzfYQ7zhCnsKX'  # TODO pass this token as a secret
+    image_bytes: bytes = _generate_image(prompt, api_key)
+    return Response(content=image_bytes, media_type="image/png")
