@@ -1,10 +1,8 @@
 import { Button, Text } from '@mantine/core';
-import { useState, useCallback } from 'react';
+import { useCallback } from 'react';
 import ReactFlow, { addEdge, Controls, Background, applyNodeChanges, applyEdgeChanges } from 'reactflow';
 import 'reactflow/dist/style.css';
-import { AlphabetGreek, ClipboardText, FileText, MessageChatbot, Microphone, Microphone2, Mountain, TextRecognition } from 'tabler-icons-react';
 import uuid from 'react-uuid';
-import { ConversationalNode, SpeechInputNode, SpeechToTextNode, SummarizationNode, TextInputNode, TextToImageNode, TranslationNode } from '../Nodes';
 import { useApp } from '../../context/AppContext';
 
 
@@ -54,7 +52,7 @@ function Flow() {
                                 nodes: [
                                     ...prev.nodes,
                                     {
-                                        id: `${model.name}-${uuid()}`,
+                                        id: `${model.type}-${uuid()}`,
                                         type: model.type,
                                         position: { x: 700, y: 700 },
                                         data: { value: 123, model: model }
