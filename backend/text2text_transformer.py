@@ -9,4 +9,4 @@ def T5_Transformer(text: str, api_key: str):
     # Request a translation
     response = requests.post(API_URL, headers=headers, json=input)
 
-    return response.json()
+    return response.json()[0]['translation_text']
