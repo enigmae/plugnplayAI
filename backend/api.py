@@ -1,7 +1,7 @@
 from fastapi import FastAPI, UploadFile
 from transcriptor import transcribe as _transcribe
-from text2text_transformer import T5_Transformer
-
+from text2text_transformer import Flan_T5_Transformer
+from chatGPT import ask
 from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI()
@@ -41,7 +41,7 @@ async def translate(text_file: UploadFile):
     """
     api_key = "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"  # TODO pass this token as a secret
     prefix = "translate English to German: "
-    return T5_Transformer(prefix + text_file.file.read().decode(), api_key)
+    return Flan_T5_Transformer(prefix + text_file.file.read().decode(), api_key)
 
 
 @app.post("/summarize", response_model=str)
@@ -51,4 +51,12 @@ async def summarize(text_file: UploadFile):
     """
     api_key = "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"  # TODO pass this token as a secret
     prefix = "summarize: "
-    return T5_Transformer(prefix + text_file.file.read().decode(), api_key)
+    return Flan_T5_Transformer(prefix + text_file.file.read().decode(), api_key)
+
+
+@app.post("/chatbot", response_model=str)
+async def question_answering(question: str):
+    """
+    Translate some text.
+    """
+    return ask(question)
