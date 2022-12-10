@@ -11,7 +11,7 @@ $ source env/bin/activate
 
 (env) backend$ uvicorn api:app --host 0.0.0.0 --port 8080 --reload
 ```
-The swagger should be running at http://0.0.0.0:8080/docs
+The swagger should be running at http://localhost:8080/docs
 
 
 Frontend
