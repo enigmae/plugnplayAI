@@ -1,9 +1,8 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Handle, Position, useEdges } from 'reactflow';
-import { Button, Group, Loader, Text, Textarea, TextInput } from '@mantine/core';
+import { Button, Group, Loader, Text, TextInput } from '@mantine/core';
 import axiosInstance from '../../../services/axiosInstance';
 import { useApp } from '../../../context/AppContext';
-import { Buffer } from 'buffer';
 
 function TextToImageNode({ data, id }) {
     const { setAppState } = useApp()
