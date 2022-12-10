@@ -1,8 +1,8 @@
-import io
-import os
+# import io
+# import os
 import warnings
 
-from IPython.display import display
+# from IPython.display import display
 from PIL import Image
 from stability_sdk import client
 import stability_sdk.interfaces.gooseai.generation.generation_pb2 as generation
