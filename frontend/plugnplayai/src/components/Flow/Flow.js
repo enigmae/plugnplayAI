@@ -83,17 +83,17 @@ const InputNodes = [
 ]
 
 const initialNodes = [
-    {
-        id: '1',
-        data: { label: 'Hello' },
-        position: { x: 550, y: 350 },
-        type: 'input',
-    },
-    {
-        id: '2',
-        data: { label: 'World' },
-        position: { x: 600, y: 600 },
-    },
+    // {
+    //     id: '1',
+    //     data: { label: 'Hello' },
+    //     position: { x: 550, y: 350 },
+    //     type: 'input',
+    // },
+    // {
+    //     id: '2',
+    //     data: { label: 'World' },
+    //     position: { x: 600, y: 600 },
+    // },
     {
         id: 'node-1',
         type: 'SpeechToText',
@@ -127,7 +127,7 @@ const nodeTypes = {
     SpeechInput: SpeechInputNode
 };
 
-const initialEdges = [{ id: '1-2', source: '1', target: '2', label: 'there', animated: true, style: { stroke: 'black', strokeWidth: 2 }, }];
+const initialEdges = [];
 
 function Flow() {
     const [nodes, setNodes] = useState(initialNodes);
