@@ -38,7 +38,12 @@ function SpeechInputNode({ data }) {
 
                 </div>
             </div>
-            <Handle type="source" position={Position.Right} style={{ width: handleSize, height: handleSize }} />
+            <Handle
+                type="source"
+                position={Position.Right}
+                style={{ width: handleSize, height: handleSize }}
+                onConnect={(params) => console.log('handle source onConnect', params)}
+            />
         </>
     );
 }

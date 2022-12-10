@@ -5,145 +5,40 @@ import 'reactflow/dist/style.css';
 import { AlphabetGreek, ClipboardText, FileText, MessageChatbot, Microphone, Microphone2, Mountain, TextRecognition } from 'tabler-icons-react';
 import uuid from 'react-uuid';
 import { ConversationalNode, SpeechInputNode, SpeechToTextNode, SummarizationNode, TextInputNode, TextToImageNode, TranslationNode } from '../Nodes';
+import { useApp } from '../../context/AppContext';
 
-const ModelNodes = [
-    {
-        name: "Speech-to-Text",
-        type: 'SpeechToText',
-        color: '#ffaa00',
-        icon: <Microphone2
-            size={25}
-            strokeWidth={1.5}
-            color={'#ffaa00'}
-        />
-    },
-    {
-        name: "Translation",
-        type: 'Translation',
-        color: '#7dd279',
-        icon: <AlphabetGreek
-            size={25}
-            strokeWidth={1.5}
-            color={'#7dd279'}
-        />
-    },
-    {
-        name: "Text-to-Image",
-        type: 'TextToImage',
-        color: '#bf40af',
-        icon: <Mountain
-            size={25}
-            strokeWidth={1.5}
-            color={'#bf40af'}
-        />
-    },
-    {
-        name: "Conversational",
-        type: 'Conversational',
-        color: '#ff3f3f',
-        icon: <MessageChatbot
-            size={25}
-            strokeWidth={1.5}
-            color={'#ff3f3f'}
-        />
-    },
-    {
-        name: "Summarization",
-        type: 'SpeechToText',
-        color: '#7676fc',
-        icon: <ClipboardText
-            size={25}
-            strokeWidth={1.5}
-            color={'#7676fc'}
-        />
-    }
-]
-
-const InputNodes = [
-    {
-        name: "Speech Input",
-        type: 'SpeechInput',
-        color: '#ffaa00',
-        icon: <Microphone
-            size={25}
-            strokeWidth={1.5}
-            color={'#ffaa00'}
-        />
-    },
-    {
-        name: "Text Input",
-        type: 'TextInput',
-        color: '#7dd279',
-        icon: <FileText
-            size={25}
-            strokeWidth={1.5}
-            color={'#7dd279'}
-        />
-    },
-]
-
-const initialNodes = [
-    // {
-    //     id: '1',
-    //     data: { label: 'Hello' },
-    //     position: { x: 550, y: 350 },
-    //     type: 'input',
-    // },
-    // {
-    //     id: '2',
-    //     data: { label: 'World' },
-    //     position: { x: 600, y: 600 },
-    // },
-    {
-        id: 'node-1',
-        type: 'SpeechToText',
-        position: { x: 200, y: 200 },
-        data: {
-            value: 123, model: {
-                name: "Speech-to-Text",
-                type: 'SpeechToText',
-                color: '#ffaa00',
-                icon: <Microphone2
-                    size={25}
-                    strokeWidth={1.5}
-                    color={'#ffaa00'}
-                />
-            }
-        }
-    },
-
-];
-
-const nodeTypes = {
-    // Model Nodes
-    SpeechToText: SpeechToTextNode,
-    Translation: TranslationNode,
-    TextToImage: TextToImageNode,
-    Conversational: ConversationalNode,
-    Summarization: SummarizationNode,
-
-    // Input Nodes
-    TextInput: TextInputNode,
-    SpeechInput: SpeechInputNode
-};
-
-const initialEdges = [];
 
 function Flow() {
-    const [nodes, setNodes] = useState(initialNodes);
-    const [edges, setEdges] = useState(initialEdges);
+    const { appState, setAppState, ModelNodes, InputNodes, nodeTypes } = useApp();
+
+    // const [nodes, setNodes] = useState(appState.nodes);
+    // const [edges, setEdges] = useState(initialEdges);
 
     const onNodesChange = useCallback(
-        (changes) => setNodes((nds) => applyNodeChanges(changes, nds)),
-        []
+        (changes) => setAppState(prevAppState => {
+            return ({
+                ...prevAppState,
+                nodes: applyNodeChanges(changes, prevAppState.nodes)
+            })
+        }), []
     );
+
     const onEdgesChange = useCallback(
-        (changes) => setEdges((eds) => applyEdgeChanges(changes, eds)),
-        []
+        (changes) => setAppState(prevAppState => {
+            return ({
+                ...prevAppState,
+                edges: applyEdgeChanges(changes, prevAppState.edges)
+            })
+        }), []
     );
+
     const onConnect = useCallback(
-        (connection) => setEdges((eds) => addEdge(connection, eds)),
-        [setEdges]
+        (connection) => setAppState(prevAppState => {
+            return ({
+                ...prevAppState,
+                edges: addEdge(connection, prevAppState.edges)
+            })
+        }), [setAppState]
     );
 
     const ModelButton = ({ model }) => {
@@ -153,16 +48,19 @@ function Flow() {
                     variant='outline'
                     style={{ display: 'flex', flex: 1, border: '1px solid #e5e5e5', color: 'black', padding: 0 }}
                     onClick={() => {
-                        setNodes(prev => {
-                            return ([
+                        setAppState(prev => {
+                            return ({
                                 ...prev,
-                                {
-                                    id: `${model.name}-${uuid()}`,
-                                    type: model.type,
-                                    position: { x: 700, y: 700 },
-                                    data: { value: 123, model: model }
-                                }
-                            ])
+                                nodes: [
+                                    ...prev.nodes,
+                                    {
+                                        id: `${model.name}-${uuid()}`,
+                                        type: model.type,
+                                        position: { x: 700, y: 700 },
+                                        data: { value: 123, model: model }
+                                    }
+                                ]
+                            })
                         })
                     }}
                 >
@@ -220,8 +118,8 @@ function Flow() {
                 {/* ReactFlow  */}
                 <div style={{ height: '100%', width: '85%' }}>
                     <ReactFlow
-                        nodes={nodes}
-                        edges={edges}
+                        nodes={appState.nodes}
+                        edges={appState.edges}
                         nodeTypes={nodeTypes}
                         onNodesChange={onNodesChange}
                         onEdgesChange={onEdgesChange}

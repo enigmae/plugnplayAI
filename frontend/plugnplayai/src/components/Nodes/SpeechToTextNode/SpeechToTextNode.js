@@ -9,16 +9,6 @@ function SpeechToTextNode({ data }) {
     const handleSize = 15;
     const [loading, setLoading] = useState(false);
 
-    const edges = useEdges();
-
-    useEffect(() => {
-        console.log(edges);
-    }, [edges]);
-
-    const onChange = useCallback((evt) => {
-        console.log(evt.target.value);
-    }, []);
-
     useEffect(() => {
         console.log(data)
     }, [data])
@@ -39,7 +29,13 @@ function SpeechToTextNode({ data }) {
 
     return (
         <>
-            <Handle type="target" position={Position.Left} id="a" style={{ width: handleSize, height: handleSize }} />
+            <Handle
+                type="target"
+                position={Position.Left}
+                id="a"
+                style={{ width: handleSize, height: handleSize }}
+                onConnect={(params) => console.log('handle target onConnect', params)}
+            />
             <div style={{ border: `2px solid ${baseColor}`, borderRadius: 5, width: 300, height: 200 }}>
                 <div style={{ display: 'flex', justifyContent: 'center', borderBottom: `2px solid ${baseColor}`, background: baseColor, padding: 8 }}>
                     <Text color='white' weight={800} size='xl'>{model.name}</Text>
@@ -56,7 +52,12 @@ function SpeechToTextNode({ data }) {
                     </Button>
                 </div>
             </div>
-            <Handle type="source" position={Position.Right} style={{ width: handleSize, height: handleSize }} />
+            <Handle
+                type="source"
+                position={Position.Right}
+                style={{ width: handleSize, height: handleSize }}
+                onConnect={(params) => console.log('handle onConnect', params)}
+            />
         </>
     );
 }
