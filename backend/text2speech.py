@@ -8,5 +8,7 @@ def fastspeech(text: str, api_key: str):
 
     # Request a speech
     response = request_response(API_URL, headers=headers, json=input)
+    with open("out.flac", "wb") as f:
+        f.write(response.content)
 
-    return response
+    return "out.flac"
