@@ -1,4 +1,4 @@
-from .utils import request_response
+from utils import request_response
 
 
 def Flan_T5_Transformer(text: str, api_key: str):

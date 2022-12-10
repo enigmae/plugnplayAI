@@ -1,4 +1,4 @@
-from .utils import request_response
+from utils import request_response
 
 
 def fastspeech(text: str, api_key: str):
