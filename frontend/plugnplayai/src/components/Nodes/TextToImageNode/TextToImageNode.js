@@ -3,6 +3,7 @@ import { Handle, Position, useEdges } from 'reactflow';
 import { Button, Group, Loader, Text, Textarea, TextInput } from '@mantine/core';
 import axiosInstance from '../../../services/axiosInstance';
 import { useApp } from '../../../context/AppContext';
+import { Buffer } from 'buffer';
 
 function TextToImageNode({ data, id }) {
     const { setAppState } = useApp()
@@ -32,8 +33,10 @@ function TextToImageNode({ data, id }) {
             }
         })
 
+        const image = Buffer.from(response.data, 'binary').toString('base64');
         setLoading(false);
-        setResponseImage(Buffer.from(response.data, "binary").toString("base64"));
+        setResponseImage(image);
+        console.log("success", image, response)
     }
 
     useEffect(() => {
@@ -98,8 +101,10 @@ function TextToImageNode({ data, id }) {
                     </Button>
                 </div>
                 {responseImage && (
-                    <div style={{ padding: 10 }}>
+                    <div style={{ padding: 10, height: 100, width: 100 }}>
                         <img src={`data:image/jpeg;charset=utf-8;base64,${responseImage}`} />
+                        <img src={`data:image/png;base64,${responseImage}`} />
+                        <img src={`data:image/png;base64,${responseImage}`} />
                     </div>
                 )}
             </div>
