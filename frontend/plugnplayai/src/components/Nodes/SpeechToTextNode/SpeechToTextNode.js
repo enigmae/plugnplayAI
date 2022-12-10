@@ -1,7 +1,7 @@
 import { useCallback } from 'react';
 import { Handle, Position } from 'reactflow';
-import { Group, Text, TextInput } from '@mantine/core';
-
+import { Button, Group, Text, TextInput } from '@mantine/core';
+import axiosInstance from '../../../services/axiosInstance';
 
 function SpeechToTextNode({ data }) {
     const { model } = data;
@@ -11,6 +11,16 @@ function SpeechToTextNode({ data }) {
     const onChange = useCallback((evt) => {
         console.log(evt.target.value);
     }, []);
+
+    const processSpeech = async () => {
+        console.log("here1")
+        const response = await axiosInstance.get(
+            '/transcribe'
+        );
+        console.log("here2")
+
+        console.log(response);
+    }
 
     return (
         <>
@@ -24,6 +34,9 @@ function SpeechToTextNode({ data }) {
                         <Text>Seed</Text>
                         <TextInput />
                     </Group>
+                </div>
+                <div style={{ display: 'flex', flex: 1, justifyContent: 'center' }}>
+                    <Button style={{ width: 150 }} onClick={() => processSpeech()}>Apply</Button>
                 </div>
             </div>
             <Handle type="target" position={Position.Right} style={{ width: handleSize, height: handleSize }} />
