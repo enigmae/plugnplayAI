@@ -38,21 +38,21 @@ async def transcribe(audio_mp3: UploadFile):
 
 
 @app.post("/translate", response_model=str)
-async def translate(text_file: UploadFile):
+async def translate(text_file: str):
     """
     Translate some text.
     """
     prefix = "translate English to German: "
-    return Flan_T5_Transformer(prefix + text_file.file.read().decode(), huggingface_api_key)
+    return Flan_T5_Transformer(prefix + text_file, huggingface_api_key)
 
 
 @app.post("/summarize", response_model=str)
-async def summarize(text_file: UploadFile):
+async def summarize(text_file):
     """
     Summarize some text.
     """
     prefix = "summarize: "
-    return Flan_T5_Transformer(prefix + text_file.file.read().decode(), huggingface_api_key)
+    return Flan_T5_Transformer(prefix + text_file, huggingface_api_key)
 
 
 @app.post("/chatbot", response_model=str)
