@@ -1,13 +1,12 @@
-import requests
-# import IPython.display as ipd
+from .utils import request_response
 
 
 def fastspeech(text: str, api_key: str):
-    API_URL = "https://api-inference.huggingface.co/models/facebook/fastspeech2-en-ljspeech"
+    API_URL = "https://api-inference.huggingface.co/models/espnet/kan-bayashi_ljspeech_vits"
     headers = {"Authorization": "Bearer " + api_key}
     input = {'inputs': text}
 
-    # Request a translation
-    response = requests.post(API_URL, headers=headers, json=input)
+    # Request a speech
+    response = request_response(API_URL, headers=headers, json=input)
 
-    return response.content
+    return response

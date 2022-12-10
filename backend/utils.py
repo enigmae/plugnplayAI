@@ -67,3 +67,14 @@ def get_paragraphs(polling_endpoint, header):
         paragraphs.append(para)
 
     return paragraphs
+
+
+def request_response(API_URL, headers, json):
+    response = requests.post(API_URL, headers=headers, json=json)
+    status = True
+    while status:
+        if response.status_code != 200:
+            time.sleep(1)
+        else:
+            status = False
+    return response
