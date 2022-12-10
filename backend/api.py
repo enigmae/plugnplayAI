@@ -2,7 +2,6 @@ from fastapi import FastAPI, Response, UploadFile
 from transcriptor import transcribe as _transcribe
 from text2text_transformer import Flan_T5_Transformer
 # from chatGPT import ask
-from text2text_transformer import T5_Transformer
 from image_generator import generate_image as _generate_image
 
 from fastapi.middleware.cors import CORSMiddleware
