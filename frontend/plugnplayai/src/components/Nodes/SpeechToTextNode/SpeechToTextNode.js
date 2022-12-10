@@ -83,10 +83,10 @@ function SpeechToTextNode({ data, id }) {
                 </div>
                 <div style={{ padding: 8 }}>
                     {data.sourceData && data.sourceData[0].name}
-                    <Group position='apart' style={{ padding: 8 }}>
+                    {/* <Group position='apart' style={{ padding: 8 }}>
                         <Text>Seed</Text>
                         <TextInput />
-                    </Group>
+                    </Group> */}
                 </div>
                 <div style={{ display: 'flex', flex: 1, justifyContent: 'center' }}>
                     <Button
