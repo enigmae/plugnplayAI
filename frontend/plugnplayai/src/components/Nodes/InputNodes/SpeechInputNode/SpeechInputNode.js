@@ -1,10 +1,9 @@
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Handle, Position } from 'reactflow';
-import { Group, Text, TextInput } from '@mantine/core';
+import { Text, } from '@mantine/core';
 import AudioDropzone from '../../../AudioDropzone/AudioDropzone';
-import { Tex } from 'tabler-icons-react';
 import { useApp } from '../../../../context/AppContext';
-import ReactFlow, { useEdges } from 'reactflow';
+import { useEdges } from 'reactflow';
 
 function SpeechInputNode({ data, id }) {
     const { setAppState } = useApp()

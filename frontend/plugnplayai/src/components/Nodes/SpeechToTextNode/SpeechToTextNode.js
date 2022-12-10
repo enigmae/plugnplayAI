@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from 'react';
 import { Handle, Position, useEdges } from 'reactflow';
-import { Button, Group, LoadingOverlay, Text, Textarea, TextInput } from '@mantine/core';
+import { Button, Group, Loader, LoadingOverlay, Text, Textarea, TextInput } from '@mantine/core';
 import axiosInstance from '../../../services/axiosInstance';
 
 function SpeechToTextNode({ data }) {
@@ -16,7 +16,6 @@ function SpeechToTextNode({ data }) {
     }, [data])
 
     const processSpeech = async () => {
-        console.log("here1")
         setLoading(true);
 
         var audioFile = data.sourceData;
@@ -32,7 +31,6 @@ function SpeechToTextNode({ data }) {
 
         setLoading(false);
         setResponseData(response.data);
-        console.log(response);
     }
 
     return (
@@ -44,7 +42,7 @@ function SpeechToTextNode({ data }) {
                 style={{ width: handleSize, height: handleSize }}
                 onConnect={(params) => console.log('handle target onConnect', params)}
             />
-            <div style={{ border: `2px solid ${baseColor}`, borderRadius: 5, width: 300 }}>
+            <div style={{ border: `2px solid ${baseColor}`, paddingBottom: 10, borderRadius: 5, width: 300 }}>
                 <div style={{ display: 'flex', justifyContent: 'center', borderBottom: `2px solid ${baseColor}`, background: baseColor, padding: 8 }}>
                     <Text color='white' weight={800} size='xl'>{model.name}</Text>
                 </div>
@@ -62,7 +60,7 @@ function SpeechToTextNode({ data }) {
                         onClick={() => processSpeech()}
                         disabled={!data.sourceData}
                     >
-                        {loading ? <LoadingOverlay visible={true} overlayBlur={2} radius='sm' /> : 'Apply'}
+                        {loading ? <Loader variant="bars" size="xs" color='yellow' /> : 'Apply'}
                     </Button>
                 </div>
                 {responseData && (
