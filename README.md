@@ -9,11 +9,11 @@ $ virtualenv env
 $ source env/bin/activate
 (env) $ pip install -r requirements.txt
 
-(env) backend$ uvicorn api:app --host 0.0.0.0 --port 8080 --reload
+(env) backend$ uvicorn api:app --host 127.0.0.1 --port 8000 --reload
 ```
-The swagger should be running at http://localhost:8080/docs
+The swagger should be running at http://localhost:8000/docs
 
-Public endpoint running on an EC2 instance: http://3.67.97.55/docs
+Public endpoint running on an EC2 instance with SSL: https://18.193.101.239/docs
 
 Note: On Ubuntu make sure you got `sudo apt-get install portaudio19-dev` before installing `pyaudio`.
 
