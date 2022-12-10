@@ -1,7 +1,7 @@
 import { useState, useCallback } from 'react';
 import ReactFlow, { addEdge, Controls, Background, applyNodeChanges, applyEdgeChanges } from 'reactflow';
 import 'reactflow/dist/style.css';
-import TextUpdaterNode from '../TextUpdaterNode/TextUpdaterNode.js';
+import SpeechToTextNode from '../SpeechToTextNode/SpeechToTextNode.js';
 
 const initialNodes = [
     {
@@ -24,9 +24,9 @@ const initialNodes = [
 
 ];
 
-const nodeTypes = { textUpdater: TextUpdaterNode };
+const nodeTypes = { textUpdater: SpeechToTextNode };
 
-const initialEdges = [{ id: '1-2', source: '1', target: '2', label: 'to the' }];
+const initialEdges = [{ id: '1-2', source: '1', target: '2', label: 'there', animated: true, style: { stroke: 'black', strokeWidth: 2 }, }];
 
 function Flow() {
     const [nodes, setNodes] = useState(initialNodes);
