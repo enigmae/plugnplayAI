@@ -27,16 +27,21 @@ function TextToImageNode({ data, id }) {
             params: {
                 prompt: data.sourceData
             },
+            responseType: 'arraybuffer',
             headers: {
                 'accept': 'application/json',
                 'content-type': 'application/x-www-form-urlencoded'
             }
         })
 
-        const image = Buffer.from(response.data, 'binary').toString('base64');
+        const imageData = btoa(
+            new Uint8Array(response.data)
+                .reduce((data, byte) => data + String.fromCharCode(byte), '')
+        );
+        // const image = "data:image/png;base64," + Buffer.from(response.data, 'binary').toString('base64');
         setLoading(false);
-        setResponseImage(image);
-        console.log("success", image, response)
+        setResponseImage(imageData);
+        console.log("success", imageData, response)
     }
 
     useEffect(() => {
@@ -101,10 +106,9 @@ function TextToImageNode({ data, id }) {
                     </Button>
                 </div>
                 {responseImage && (
-                    <div style={{ padding: 10, height: 100, width: 100 }}>
-                        <img src={`data:image/jpeg;charset=utf-8;base64,${responseImage}`} />
-                        <img src={`data:image/png;base64,${responseImage}`} />
-                        <img src={`data:image/png;base64,${responseImage}`} />
+                    <div style={{ padding: 10, display: 'flex', justifyContent: 'center' }}>
+                        <img style={{ width: 200, height: 200 }} src={`data:image/png;base64,${responseImage}`} />
+                        {/* <img style={{ height: 200, width: 200 }} src={responseImage} /> */}
                     </div>
                 )}
             </div>
