@@ -1,7 +1,7 @@
 from fastapi import FastAPI, Response, UploadFile
 from transcriptor import transcribe as _transcribe
 from text2text_transformer import Flan_T5_Transformer
-from chatGPT import ask
+# from chatGPT import ask
 from text2text_transformer import T5_Transformer
 from image_generator import generate_image as _generate_image
 
@@ -57,12 +57,12 @@ async def summarize(text_file: UploadFile):
     return Flan_T5_Transformer(prefix + text_file.file.read().decode(), api_key)
 
 
-@app.post("/chatbot", response_model=str)
-async def question_answering(question: str):
-    """
-    Translate some text.
-    """
-    return ask(question)
+#@app.post("/chatbot", response_model=str)
+#async def question_answering(question: str):
+#    """
+#    Translate some text.
+#    """
+#    return ask(question)
 
 
 @app.post("/generate_image")
