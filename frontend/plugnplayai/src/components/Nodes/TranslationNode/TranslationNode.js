@@ -1,4 +1,3 @@
-import { useCallback } from 'react';
 import { Handle, Position } from 'reactflow';
 import { Group, Text, TextInput } from '@mantine/core';
 
@@ -7,10 +6,6 @@ function TranslationNode({ data }) {
     const { model } = data;
     const baseColor = model.color;
     const handleSize = 15;
-
-    const onChange = useCallback((evt) => {
-        console.log(evt.target.value);
-    }, []);
 
     return (
         <>

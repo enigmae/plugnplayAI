@@ -98,7 +98,8 @@ const initialState = {
             type: 'SpeechToText',
             position: { x: 200, y: 200 },
             data: {
-                value: 123, model: {
+                value: 123,
+                model: {
                     name: "Speech-to-Text",
                     type: 'SpeechToText',
                     color: '#ffaa00',

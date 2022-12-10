@@ -3,18 +3,39 @@ import { Handle, Position } from 'reactflow';
 import { Group, Text, TextInput } from '@mantine/core';
 import AudioDropzone from '../../../AudioDropzone/AudioDropzone';
 import { Tex } from 'tabler-icons-react';
+import { useApp } from '../../../../context/AppContext';
 
 
 function SpeechInputNode({ data }) {
+    const { setAppState } = useApp()
     const { model } = data;
     const baseColor = model.color;
     const handleSize = 15;
-
-    const onChange = useCallback((evt) => {
-        console.log(evt.target.value);
-    }, []);
-
     const [audioFile, setAudioFile] = useState(null);
+
+    const handleSpeechInput = (params) => {
+        const { target } = params
+        setAppState(prevState => {
+            let targetNode = prevState.nodes.find(node => node.id === target);
+            let restNodes = prevState.nodes.filter(node => node.id !== target);
+
+            targetNode = {
+                ...targetNode,
+                data: {
+                    ...targetNode.data,
+                    sourceData: audioFile
+                }
+            }
+
+            return ({
+                ...prevState,
+                nodes: [
+                    ...restNodes,
+                    targetNode
+                ]
+            })
+        })
+    }
 
     return (
         <>
@@ -42,7 +63,7 @@ function SpeechInputNode({ data }) {
                 type="source"
                 position={Position.Right}
                 style={{ width: handleSize, height: handleSize }}
-                onConnect={(params) => console.log('handle source onConnect', params)}
+                onConnect={(params) => handleSpeechInput(params)}
             />
         </>
     );
