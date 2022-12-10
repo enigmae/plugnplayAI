@@ -19,7 +19,8 @@ docs_build
 venv
 docs.zip
 archive.zip
-
+chat_log.txt
+id_log.txt
 # vim temporary files
 *~
 .*.sw?
