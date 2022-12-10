@@ -1,9 +1,17 @@
-import argparse
-import os
 import utils
 
 
-def transcribe(audio_file: str, api_key: str) -> str:  # TODO refactor this as an interface
+def save_mp3(mp3) -> str:
+    path = "samples/tmp.mp3"
+    with open(path, 'wb') as f:
+        f.write(mp3)
+    return path
+
+
+def transcribe(audio_mp3, api_key: str) -> str:  # TODO refactor this as an interface
+    # Save MP3 file
+    path_audio = save_mp3(audio_mp3)
+
     # Create header with authorization along with content-type
     header = {
         'authorization': api_key,
@@ -11,7 +19,7 @@ def transcribe(audio_file: str, api_key: str) -> str:  # TODO refactor this as a
     }
 
     # Upload the audio file to AssemblyAI
-    upload_url = utils.upload_file(audio_file, header)
+    upload_url = utils.upload_file(path_audio, header)
 
     # Request a transcription
     transcript_response = utils.request_transcript(upload_url, header)

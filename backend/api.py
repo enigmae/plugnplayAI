@@ -1,4 +1,4 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, UploadFile
 from transcriptor import transcribe as _transcribe
 
 from fastapi.middleware.cors import CORSMiddleware
@@ -15,7 +15,8 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-@app.get("/health", response_model=str)
+
+@app.get("/", response_model=str)
 async def get_health():
     """
     Check for the API health.
@@ -23,11 +24,10 @@ async def get_health():
     return "healthy"
 
 
-@app.get("/transcribe", response_model=str)
-async def transcribe():
+@app.post("/transcribe", response_model=str)
+async def transcribe(audio_mp3: UploadFile):
     """
-    Transcribe some audio.
+    Transcribe an MP3 file.
     """
     api_key = 'b2bcc06df08d4245950139b798fd5e36'  # TODO pass this token as a secret
-    audio_file = 'samples/audio_7sec.mp3'
-    return _transcribe(audio_file, api_key)
+    return _transcribe(audio_mp3.file.read(), api_key)
