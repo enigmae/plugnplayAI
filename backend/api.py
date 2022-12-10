@@ -38,11 +38,11 @@ async def transcribe(audio_mp3: UploadFile):
 
 
 @app.post("/translate", response_model=str)
-async def translate(text_file: str):
+async def translate(text_file: str, language: str):
     """
     Translate some text.
     """
-    prefix = "translate English to German: "
+    prefix = "translate English to {}: ".format(language)
     return Flan_T5_Transformer(prefix + text_file, huggingface_api_key)
 
 
