@@ -2,8 +2,63 @@ import { Button, Text } from '@mantine/core';
 import { useState, useCallback } from 'react';
 import ReactFlow, { addEdge, Controls, Background, applyNodeChanges, applyEdgeChanges } from 'reactflow';
 import 'reactflow/dist/style.css';
-import SpeechToTextNode from '../SpeechToTextNode/SpeechToTextNode.js';
-import { MessageChatbot, Microphone2, Mountain, TextRecognition } from 'tabler-icons-react';
+import { AlphabetGreek, ClipboardText, MessageChatbot, Microphone2, Mountain, TextRecognition } from 'tabler-icons-react';
+import uuid from 'react-uuid';
+import { ConversationalNode, SpeechToTextNode, SummarizationNode, TextToImageNode, TranslationNode } from '../Nodes';
+
+
+const ModelNodes = [
+    {
+        name: "Speech-to-Text",
+        type: 'SpeechToText',
+        color: '#ffaa00',
+        icon: <Microphone2
+            size={25}
+            strokeWidth={1.5}
+            color={'#ffaa00'}
+        />
+    },
+    {
+        name: "Translation",
+        type: 'Translation',
+        color: '#7dd279',
+        icon: <AlphabetGreek
+            size={25}
+            strokeWidth={1.5}
+            color={'#7dd279'}
+        />
+    },
+    {
+        name: "Text-to-Image",
+        type: 'TextToImage',
+        color: '#bf40af',
+        icon: <Mountain
+            size={25}
+            strokeWidth={1.5}
+            color={'#bf40af'}
+        />
+    },
+    {
+        name: "Conversational",
+        type: 'Conversational',
+        color: '#ff3f3f',
+        icon: <MessageChatbot
+            size={25}
+            strokeWidth={1.5}
+            color={'#ff3f3f'}
+        />
+    },
+    {
+        name: "Summarization",
+        type: 'SpeechToText',
+        color: '#7676fc',
+        icon: <ClipboardText
+            size={25}
+            strokeWidth={1.5}
+            color={'#7676fc'}
+        />
+    }
+]
 
 const initialNodes = [
     {
@@ -19,14 +74,31 @@ const initialNodes = [
     },
     {
         id: 'node-1',
-        type: 'textUpdater',
+        type: 'SpeechToText',
         position: { x: 200, y: 200 },
-        data: { value: 123 }
+        data: {
+            value: 123, model: {
+                name: "Speech-to-Text",
+                type: 'SpeechToText',
+                color: '#ffaa00',
+                icon: <Microphone2
+                    size={25}
+                    strokeWidth={1.5}
+                    color={'#ffaa00'}
+                />
+            }
+        }
     },
 
 ];
 
-const nodeTypes = { textUpdater: SpeechToTextNode };
+const nodeTypes = {
+    SpeechToText: SpeechToTextNode,
+    Translation: TranslationNode,
+    TextToImage: TextToImageNode,
+    Conversational: ConversationalNode,
+    Summarization: SummarizationNode,
+};
 
 const initialEdges = [{ id: '1-2', source: '1', target: '2', label: 'there', animated: true, style: { stroke: 'black', strokeWidth: 2 }, }];
 
@@ -47,20 +119,33 @@ function Flow() {
         [setEdges]
     );
 
-    const ModelButton = ({ icon, modelName }) => {
+    const ModelButton = ({ model }) => {
         return (
             <div style={{ padding: '10px 10px 0px 10px', display: 'flex' }}>
                 <Button
                     variant='outline'
                     style={{ display: 'flex', flex: 1, border: '1px solid #e5e5e5', color: 'black', padding: 0 }}
+                    onClick={() => {
+                        setNodes(prev => {
+                            return ([
+                                ...prev,
+                                {
+                                    id: `${model.name}-${uuid()}`,
+                                    type: model.type,
+                                    position: { x: 700, y: 700 },
+                                    data: { value: 123, model: model }
+                                }
+                            ])
+                        })
+                    }}
                 >
                     <div style={{ width: '160px', flex: 1, display: 'flex', flexDirection: 'row', justifyContent: 'flex-end' }}>
                         <div style={{ padding: '0px 10px 0px 10px' }}>
-                            {icon}
+                            {model.icon}
                         </div>
                         <div style={{ display: 'flex', flex: 1, justifyContent: 'center', }}>
                             <Text size='md' weight={400} >
-                                {modelName}
+                                {model.name}
                             </Text>
                         </div>
                     </div>
@@ -70,7 +155,6 @@ function Flow() {
     }
 
     return (
-
         <div style={{ height: '100%' }}>
             <div style={{ display: 'flex', flexDirection: 'row', height: '100vh', width: '100hw' }}>
                 {/* Model Menu */}
@@ -79,38 +163,14 @@ function Flow() {
                         Models
                     </div>
                     <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'flex-start' }}>
-                        <ModelButton
-                            icon={<Microphone2
-                                size={25}
-                                strokeWidth={1.5}
-                                color={'#ffaa00'}
-                            />}
-                            modelName="Speech-to-Text"
-                        />
-                        <ModelButton
-                            icon={<TextRecognition
-                                size={25}
-                                strokeWidth={1.5}
-                                color={'#7dd279'}
-                            />}
-                            modelName="Text-to-Text"
-                        />
-                        <ModelButton
-                            icon={<Mountain
-                                size={25}
-                                strokeWidth={1.5}
-                                color={'#bf40af'}
-                            />}
-                            modelName="Text-to-Image"
-                        />
-                        <ModelButton
-                            icon={<MessageChatbot
-                                size={25}
-                                strokeWidth={1.5}
-                                color={'#ff3f3f'}
-                            />}
-                            modelName="Text-to-Chat"
-                        />
+                        {ModelNodes.map((model, index) => {
+                            return (
+                                <ModelButton
+                                    key={index}
+                                    model={model}
+                                />
+                            )
+                        })}
                     </div>
                 </div>
 
