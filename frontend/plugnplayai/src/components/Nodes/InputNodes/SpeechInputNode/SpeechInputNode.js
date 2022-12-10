@@ -1,17 +1,26 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { Handle, Position } from 'reactflow';
 import { Group, Text, TextInput } from '@mantine/core';
 import AudioDropzone from '../../../AudioDropzone/AudioDropzone';
 import { Tex } from 'tabler-icons-react';
 import { useApp } from '../../../../context/AppContext';
+import ReactFlow, { useEdges } from 'reactflow';
 
-
-function SpeechInputNode({ data }) {
+function SpeechInputNode({ data, id }) {
     const { setAppState } = useApp()
     const { model } = data;
     const baseColor = model.color;
     const handleSize = 15;
     const [audioFile, setAudioFile] = useState(null);
+
+    const edges = useEdges();
+
+    useEffect(() => {
+        if (audioFile) {
+            let outgoingEdges = edges.find(edg => edg.source === id);
+            outgoingEdges && handleSpeechInput(outgoingEdges)
+        }
+    }, [audioFile]);
 
     const handleSpeechInput = (params) => {
         const { target } = params
