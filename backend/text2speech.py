@@ -11,4 +11,4 @@ def fastspeech(text: str, api_key: str):
     with open("out.flac", "wb") as f:
         f.write(response.content)
 
-    return "out.flac"
+    return "/backend/out.flac"
