@@ -2,6 +2,9 @@
 
 Use AI Models in a node-based no-code platform to create AI powered projects and workflows.
 
+https://devpost.com/software/plugnplay-ai
+
+
 Built during the AI Hackathon hosted by AssemblyAI
 
 https://hackathon.assemblyai.com/
