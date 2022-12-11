@@ -1,8 +1,8 @@
 # plugnplayAI
 
-https://jigsaw-ai.vercel.app/
+Public endpoint. Note: Use Chrome!
 
-Note: Use Chrome!
+https://jigsaw-ai.vercel.app/
 
 
 # Backend
