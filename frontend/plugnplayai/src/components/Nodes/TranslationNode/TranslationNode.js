@@ -1,10 +1,11 @@
-import { Handle, Position } from 'reactflow';
+import { Handle, Position, useEdges } from 'reactflow';
 import { Button, Group, Loader, LoadingOverlay, Text, Textarea, TextInput } from '@mantine/core';
 import { useEffect, useState } from 'react';
 import axiosInstance from '../../../services/axiosInstance';
+import { useApp } from '../../../context/AppContext';
 
-
-function TranslationNode({ data }) {
+function TranslationNode({ data, id }) {
+    const { setAppState } = useApp()
     const { model } = data;
     const baseColor = model.color;
     const handleSize = 15;
@@ -12,9 +13,42 @@ function TranslationNode({ data }) {
     const [loading, setLoading] = useState(false);
     const [responseData, setResponseData] = useState(null);
 
+    const edges = useEdges();
+
     useEffect(() => {
         console.log(data)
     }, [data])
+
+    useEffect(() => {
+        if (responseData) {
+            let outgoingEdges = edges.find(edg => edg.source === id);
+            outgoingEdges && handleTextInput(outgoingEdges)
+        }
+    }, [responseData]);
+
+    const handleTextInput = (params) => {
+        const { target } = params
+        setAppState(prevState => {
+            let targetNode = prevState.nodes.find(node => node.id === target);
+            let restNodes = prevState.nodes.filter(node => node.id !== target);
+
+            targetNode = {
+                ...targetNode,
+                data: {
+                    ...targetNode.data,
+                    sourceData: responseData
+                }
+            }
+
+            return ({
+                ...prevState,
+                nodes: [
+                    ...restNodes,
+                    targetNode
+                ]
+            })
+        })
+    }
 
     const processTranslate = async () => {
         try {
@@ -89,7 +123,7 @@ function TranslationNode({ data }) {
                 type="source"
                 position={Position.Right}
                 style={{ width: handleSize, height: handleSize }}
-                onConnect={(params) => console.log('handle onConnect', params)}
+                onConnect={(params) => handleTextInput(params)}
             />
         </>
     );
