@@ -4,8 +4,11 @@
 # Backend
 
 ```shell
+$ sudo apt update
+$ sudo apt install python3.9
 $ sudo apt install python3-virtualenv
-$ virtualenv env
+
+$ virtualenv --python="/usr/bin/python3.9" env
 $ source env/bin/activate
 (env) $ pip install -r requirements.txt
 
@@ -17,13 +20,6 @@ Public endpoint running on an EC2 instance with SSL: https://18.193.101.239/docs
 
 Note: On Ubuntu make sure you got `sudo apt-get install portaudio19-dev` before installing `pyaudio`.
 
-Make chatGPT work on Ubuntu: 
-```shell
-$ sudo apt update
-$ sudo apt install python3.9
-$ virtualenv --python="/usr/bin/python3.9" envchatgpt
-$ pip install -r requirements.txt
-```
 
 # Frontend
 
