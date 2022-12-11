@@ -1,5 +1,9 @@
 # plugnplayAI
 
+<p align="center">
+  <img src="https://github.com/joelescudefont/demo.gif?raw=true" alt="plugnplaing"/>
+</p>
+
 Use AI models in a node-based no-code platform to create AI powered projects and workflows.
 
 Built during the 2-day AI Hackathon hosted by AssemblyAI
