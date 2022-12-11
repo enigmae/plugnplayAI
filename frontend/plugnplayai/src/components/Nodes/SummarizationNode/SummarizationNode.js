@@ -39,7 +39,7 @@ function SummarizationNode({ data, id }) {
                 ...targetNode,
                 data: {
                     ...targetNode.data,
-                    sourceData: summaryData
+                    sourceData: responseData
                 }
             }
 
