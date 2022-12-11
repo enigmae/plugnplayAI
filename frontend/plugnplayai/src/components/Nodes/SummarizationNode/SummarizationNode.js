@@ -11,12 +11,15 @@ function SummarizationNode({ data, id }) {
     const handleSize = 15;
 
     const [loading, setLoading] = useState(false);
+    const [summaryData, setSummaryData] = useState('');
     const [responseData, setResponseData] = useState(null);
 
     const edges = useEdges();
 
     useEffect(() => {
-        console.log(data)
+        if (data.sourceData) {
+            setSummaryData(data.sourceData);
+        }
     }, [data])
 
     useEffect(() => {
@@ -36,7 +39,7 @@ function SummarizationNode({ data, id }) {
                 ...targetNode,
                 data: {
                     ...targetNode.data,
-                    sourceData: responseData
+                    sourceData: summaryData
                 }
             }
 
@@ -56,7 +59,7 @@ function SummarizationNode({ data, id }) {
 
             const response = await axiosInstance.post('/summarize', null, {
                 params: {
-                    text_file: data.sourceData,
+                    text_file: summaryData,
                 },
                 responseType: 'arraybuffer',
                 headers: {
@@ -94,7 +97,8 @@ function SummarizationNode({ data, id }) {
                     <div>
                         <Textarea
                             minRows={4}
-                            value={data.sourceData ? data.sourceData : ''}
+                            value={summaryData}
+                            onChange={(ev) => setSummaryData(ev.target.value)}
                         />
                     </div>
                 </div>
@@ -103,7 +107,7 @@ function SummarizationNode({ data, id }) {
                         variant="outline"
                         style={{ width: 150, borderColor: baseColor, color: baseColor }}
                         onClick={() => processSummarization()}
-                        disabled={!data.sourceData}
+                        disabled={!summaryData}
                     >
                         {loading ? <Loader variant="bars" size="xs" color='green' /> : 'Apply'}
                     </Button>
