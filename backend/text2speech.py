@@ -1,4 +1,5 @@
 from utils import request_response
+import os
 
 
 def fastspeech(text: str, api_key: str):
@@ -8,5 +9,7 @@ def fastspeech(text: str, api_key: str):
 
     # Request a speech
     response = request_response(API_URL, headers=headers, json=input)
+    with open("out.mp3", "wb") as f:
+        f.write(response.content)
 
-    return response
+    return os.path.abspath("out.mp3")

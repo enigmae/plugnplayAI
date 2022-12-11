@@ -1,5 +1,7 @@
 import requests
 import time
+import subprocess
+import re
 
 
 upload_endpoint = "https://api.assemblyai.com/v2/upload"
@@ -26,9 +28,10 @@ def upload_file(audio_file, header):
 
 
 # Request transcript for file uploaded to AAI servers
-def request_transcript(upload_url, header):
+def request_transcript(upload_url, lang_code, header):
     transcript_request = {
-        'audio_url': upload_url['upload_url']
+        'audio_url': upload_url['upload_url'],
+        'language_code': lang_code
     }
     transcript_response = requests.post(
         transcript_endpoint,
@@ -78,3 +81,29 @@ def request_response(API_URL, headers, json):
         else:
             status = False
     return response
+
+
+def from_bytes_to_file(input_bytes, output_file):
+    # using pipe:0 refers to the stdin, pipe:1 refers to stdout
+    encoded_type = ''
+    desired_output = 'mp3'
+    ffmpeg_command = f'ffmpeg  -i pipe:0 {encoded_type} -f {desired_output} pipe:1 '
+
+    ffmpeg_process = subprocess.Popen(ffmpeg_command, stdin=subprocess.PIPE, stdout=subprocess.PIPE)
+
+    output_stream = ffmpeg_process.communicate(input_bytes)
+
+    # comes back as a tuple
+    output_bytes = output_stream[0]
+
+    with open(output_file, 'ab') as f:
+        f.write(output_bytes)
+
+
+def split_text(text: str):
+    sentences = []
+
+    for element in [text]:
+        sentences += re.split("(?<=[.!?])\s+", element)
+
+    return sentences

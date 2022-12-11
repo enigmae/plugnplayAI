@@ -8,7 +8,7 @@ from stability_sdk import client
 import stability_sdk.interfaces.gooseai.generation.generation_pb2 as generation
 
 
-def generate_image(prompt, stability_key):
+def generate_image(prompt,stability_key, seed=992446758, steps=30, cfg_scale=8.0):
     # prompt = 'expansive landscape rolling greens with blue daisies and weeping willow trees under a blue alien sky, artstation, masterful, ghibli'
 
     # Set up our connection to the API.
@@ -22,11 +22,11 @@ def generate_image(prompt, stability_key):
     # Set up our initial generation parameters.
     answers = stability_api.generate(
         prompt=prompt,
-        seed=992446758, # If a seed is provided, the resulting generated image will be deterministic.
+        seed=seed, # If a seed is provided, the resulting generated image will be deterministic.
                         # What this means is that as long as all generation parameters remain the same, you can always recall the same image simply by generating it again.
                         # Note: This isn't quite the case for Clip Guided generations, which we'll tackle in a future example notebook.
-        steps=30, # Amount of inference steps performed on image generation. Defaults to 30.
-        cfg_scale=8.0, # Influences how strongly your generation is guided to match your prompt.
+        steps=steps, # Amount of inference steps performed on image generation. Defaults to 30.
+        cfg_scale=cfg_scale, # Influences how strongly your generation is guided to match your prompt.
                        # Setting this value higher increases the strength in which it tries to match your prompt.
                        # Defaults to 7.0 if not specified.
         width=512, # Generation width, defaults to 512 if not included.

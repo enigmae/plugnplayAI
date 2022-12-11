@@ -1,6 +1,6 @@
 import React, { createContext, useCallback, useContext, useState } from 'react';
-import { AlphabetGreek, ClipboardText, FileText, MessageChatbot, Microphone, Microphone2, Mountain } from 'tabler-icons-react';
-import { ConversationalNode, SpeechInputNode, SpeechToTextNode, SummarizationNode, TextInputNode, TextToImageNode, TranslationNode } from '../components/Nodes';
+import { AlphabetGreek, ClipboardText, FileText, MessageChatbot, Microphone, Microphone2, Mountain, QuestionMark } from 'tabler-icons-react';
+import { ConversationalNode, QnANode, SpeechInputNode, SpeechToTextNode, SummarizationNode, TextInputNode, TextToImageNode, TranslationNode } from '../components/Nodes';
 
 const ModelNodes = [
     {
@@ -21,6 +21,16 @@ const ModelNodes = [
             size={25}
             strokeWidth={1.5}
             color={'#7dd279'}
+        />
+    },
+    {
+        name: "Q&A",
+        type: 'QnA',
+        color: '#384bff',
+        icon: <QuestionMark
+            size={25}
+            strokeWidth={1.5}
+            color={'#384bff'}
         />
     },
     {
@@ -45,7 +55,7 @@ const ModelNodes = [
     },
     {
         name: "Summarization",
-        type: 'SpeechToText',
+        type: 'Summarization',
         color: '#7676fc',
         icon: <ClipboardText
             size={25}
@@ -59,21 +69,21 @@ const InputNodes = [
     {
         name: "Speech Input",
         type: 'SpeechInput',
-        color: '#ffaa00',
+        color: '#f656ff',
         icon: <Microphone
             size={25}
             strokeWidth={1.5}
-            color={'#ffaa00'}
+            color={'#f656ff'}
         />
     },
     {
         name: "Text Input",
         type: 'TextInput',
-        color: '#7dd279',
+        color: '#ff6532',
         icon: <FileText
             size={25}
             strokeWidth={1.5}
-            color={'#7dd279'}
+            color={'#ff6532'}
         />
     },
 ]
@@ -82,6 +92,7 @@ const nodeTypes = {
     // Model Nodes
     SpeechToText: SpeechToTextNode,
     Translation: TranslationNode,
+    QnA: QnANode,
     TextToImage: TextToImageNode,
     Conversational: ConversationalNode,
     Summarization: SummarizationNode,

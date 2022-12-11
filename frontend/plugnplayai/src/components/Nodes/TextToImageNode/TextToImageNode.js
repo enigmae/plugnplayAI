@@ -1,8 +1,9 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Handle, Position, useEdges } from 'reactflow';
 import { Button, Group, Loader, Text, Textarea, TextInput } from '@mantine/core';
 import axiosInstance from '../../../services/axiosInstance';
 import { useApp } from '../../../context/AppContext';
+import { useForm } from '@mantine/form';
 
 function TextToImageNode({ data, id }) {
     const { setAppState } = useApp()
@@ -15,25 +16,57 @@ function TextToImageNode({ data, id }) {
 
     const edges = useEdges();
 
+    const form = useForm({
+        initialValues: {
+            promptStr: 'Batman fighting an AI overlord',
+            seed: 26031998,
+            steps: 20,
+            cfgScale: 10
+        },
+
+        validate: {
+            seed: (value) => Number.isInteger(value),
+            steps: (value) => Number.isInteger(value),
+            cfgScale: (value) => Number(value) === value && value % 1 !== 0
+        },
+    });
+
     useEffect(() => {
-        console.log(data)
+        if (data.sourceData) {
+            form.setFieldValue('promptStr', data.sourceData)
+        }
     }, [data])
 
     const processTextToImage = async () => {
-        setLoading(true);
+        try {
+            setLoading(true);
 
-        const response = await axiosInstance.post('/generate_image', null, {
-            params: {
-                prompt: data.sourceData
-            },
-            headers: {
-                'accept': 'application/json',
-                'content-type': 'application/x-www-form-urlencoded'
-            }
-        })
+            const response = await axiosInstance.post('/generate_image', null, {
+                params: {
+                    prompt: form.values.promptStr,
+                    seed: form.values.seed,
+                    steps: form.values.steps,
+                    cfg_scale: form.values.cfgScale
+                },
+                responseType: 'arraybuffer',
+                headers: {
+                    'accept': 'application/json',
+                    'content-type': 'application/x-www-form-urlencoded'
+                }
+            })
 
-        setLoading(false);
-        setResponseImage(Buffer.from(response.data, "binary").toString("base64"));
+            const imageData = btoa(
+                new Uint8Array(response.data)
+                    .reduce((data, byte) => data + String.fromCharCode(byte), '')
+            );
+            // const image = "data:image/png;base64," + Buffer.from(response.data, 'binary').toString('base64');
+            setLoading(false);
+            setResponseImage(imageData);
+            console.log("success", imageData, response)
+        } catch (error) {
+            console.log(error);
+            setLoading(false);
+        }
     }
 
     useEffect(() => {
@@ -76,32 +109,70 @@ function TextToImageNode({ data, id }) {
                 style={{ width: handleSize, height: handleSize }}
                 onConnect={(params) => console.log('handle target onConnect', params)}
             />
-            <div style={{ border: `2px solid ${baseColor}`, paddingBottom: 10, borderRadius: 5, width: 300 }}>
-                <div style={{ display: 'flex', justifyContent: 'center', borderBottom: `2px solid ${baseColor}`, background: baseColor, padding: 8 }}>
-                    <Text color='white' weight={800} size='xl'>{model.name}</Text>
-                </div>
-                <div style={{ padding: 8 }}>
-                    {data.sourceData && data.sourceData[0].name}
-                    <Group position='apart' style={{ padding: 8 }}>
-                        <Text>Prompt</Text>
-                        <TextInput value={data.sourceData} />
-                    </Group>
-                </div>
-                <div style={{ display: 'flex', flex: 1, justifyContent: 'center' }}>
-                    <Button
-                        variant="outline"
-                        style={{ width: 150, borderColor: baseColor, color: baseColor }}
-                        onClick={() => processTextToImage()}
-                        disabled={!data.sourceData}
-                    >
-                        {loading ? <Loader variant="bars" size="xs" color='yellow' /> : 'Apply'}
-                    </Button>
-                </div>
+            <div style={{ border: `2px solid ${baseColor}`, borderRadius: 5, width: 300 }}>
+                <form>
+                    <div style={{ display: 'flex', justifyContent: 'center', borderBottom: `2px solid ${baseColor}`, background: baseColor, padding: 8 }}>
+                        <Text color='white' weight={800} size='xl'>{model.name}</Text>
+                    </div>
+                    <div style={{ padding: 8 }}>
+                        <Group position='apart' style={{ padding: 8 }}>
+                            <Text>Prompt</Text>
+                            <Textarea
+                                minRows={4}
+                                // value={data.sourceData} 
+                                {...form.getInputProps('promptStr')}
+                            />
+                        </Group>
+                        <Group position='apart' style={{ padding: 8 }}>
+                            <Text>Seed</Text>
+                            <TextInput
+                                {...form.getInputProps('seed')}
+                            />
+                        </Group>
+                        <Group position='apart' style={{ padding: 8 }}>
+                            <Text>Steps</Text>
+                            <TextInput {...form.getInputProps('steps')} />
+                        </Group>
+                        <Group position='apart' style={{ padding: 8 }}>
+                            <Text>CFG</Text>
+                            <TextInput {...form.getInputProps('cfgScale')} />
+                        </Group>
+                    </div>
+                    <div style={{ display: 'flex', flex: 1, justifyContent: 'center' }}>
+                        <Button
+                            variant="outline"
+                            type='submit'
+                            style={{ width: 150, borderColor: baseColor, color: baseColor }}
+                            onClick={(e) => {
+                                e.preventDefault()
+                                // form.validate();
+                                processTextToImage()
+                            }}
+                            disabled={!form.values.promptStr}
+                        >
+                            {loading ? <Loader variant="bars" size="xs" color='magenta' /> : 'Apply'}
+                        </Button>
+                    </div>
+                </form>
+
                 {responseImage && (
-                    <div style={{ padding: 10 }}>
-                        <img src={`data:image/jpeg;charset=utf-8;base64,${responseImage}`} />
+                    <div style={{ padding: 10, display: 'flex', justifyContent: 'center' }}>
+                        <img style={{ width: 200, height: 200 }} src={`data:image/png;base64,${responseImage}`} />
+                        {/* <img style={{ height: 200, width: 200 }} src={responseImage} /> */}
                     </div>
                 )}
+                <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', background: baseColor, marginTop: 10 }}>
+                    <Text color='white' weight={500}>Powered by</Text>
+                    <Text
+                        weight={500}
+                        style={{ textAlign: 'center' }}
+                        color='white'
+                    >
+                        Stability AI
+                        <br />
+                        Stable Diffusion
+                    </Text>
+                </div>
             </div>
             <Handle
                 type="source"

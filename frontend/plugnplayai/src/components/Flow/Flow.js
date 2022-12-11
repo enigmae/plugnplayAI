@@ -25,7 +25,10 @@ function Flow() {
         (changes) => setAppState(prevAppState => {
             return ({
                 ...prevAppState,
-                edges: applyEdgeChanges(changes, prevAppState.edges)
+                edges: applyEdgeChanges(changes, prevAppState.edges).map(edge => ({
+                    ...edge,
+                    animated: true
+                }))
             })
         }), []
     );
@@ -34,7 +37,10 @@ function Flow() {
         (connection) => setAppState(prevAppState => {
             return ({
                 ...prevAppState,
-                edges: addEdge(connection, prevAppState.edges)
+                edges: addEdge(connection, prevAppState.edges).map(edge => ({
+                    ...edge,
+                    animated: true
+                }))
             })
         }), [setAppState]
     );
@@ -54,7 +60,7 @@ function Flow() {
                                     {
                                         id: `${model.type}-${uuid()}`,
                                         type: model.type,
-                                        position: { x: 700, y: 700 },
+                                        position: { x: 450, y: 200 },
                                         data: { value: 123, model: model }
                                     }
                                 ]
@@ -123,7 +129,7 @@ function Flow() {
                         onEdgesChange={onEdgesChange}
                         onConnect={onConnect}
                     >
-                        <Background />
+                        <Background variant='lines' />
                         <Controls />
                     </ReactFlow>
                 </div>

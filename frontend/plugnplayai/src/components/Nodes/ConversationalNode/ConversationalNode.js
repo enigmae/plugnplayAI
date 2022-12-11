@@ -1,42 +1,42 @@
-import { useCallback, useEffect, useState } from 'react';
 import { Handle, Position, useEdges } from 'reactflow';
-import { Button, Group, Loader, Text, Textarea, TextInput } from '@mantine/core';
+import { Button, Group, Loader, LoadingOverlay, Select, Text, Textarea, TextInput } from '@mantine/core';
+import { useEffect, useState } from 'react';
 import axiosInstance from '../../../services/axiosInstance';
 import { useApp } from '../../../context/AppContext';
 
+const options = [
+    { value: 'german', label: 'German' },
+    { value: 'spanish', label: 'Spanish' },
+    { value: 'ukrain', label: 'Ukrainian' },
+    { value: 'french', label: 'French' },
+    { value: 'italian', label: 'Italian' },
+    { value: 'polish', label: 'Polish' },
+];
 
-function ConversationalNode({ data, id }) {
+function TranslationNode({ data, id }) {
     const { setAppState } = useApp()
     const { model } = data;
     const baseColor = model.color;
     const handleSize = 15;
-    const edges = useEdges();
 
     const [loading, setLoading] = useState(false);
-    const [responseText, setResponseText] = useState(null);
+    const [responseData, setResponseData] = useState(null);
+    const [chatData, setChatData] = useState('');
 
+    const edges = useEdges();
 
     useEffect(() => {
-        console.log(data)
+        if (data.sourceData) {
+            setChatData(data.sourceData);
+        }
     }, [data])
 
-    const processConversation = async () => {
-        setLoading(true);
-
-        var textFeed = data.sourceData;
-
-        const response = await axiosInstance.post('/chatbot', textFeed)
-
-        setLoading(false);
-        setResponseText(response.data);
-    }
-
     useEffect(() => {
-        if (responseText) {
+        if (responseData) {
             let outgoingEdges = edges.find(edg => edg.source === id);
             outgoingEdges && handleTextInput(outgoingEdges)
         }
-    }, [responseText]);
+    }, [responseData]);
 
     const handleTextInput = (params) => {
         const { target } = params
@@ -48,7 +48,7 @@ function ConversationalNode({ data, id }) {
                 ...targetNode,
                 data: {
                     ...targetNode.data,
-                    sourceData: responseText
+                    sourceData: responseData
                 }
             }
 
@@ -62,6 +62,33 @@ function ConversationalNode({ data, id }) {
         })
     }
 
+    const processChatGPT = async () => {
+        try {
+            setLoading(true);
+
+            const response = await axiosInstance.post('/chatbot', null, {
+                params: {
+                    question: chatData,
+                },
+                responseType: 'arraybuffer',
+                headers: {
+                    'accept': 'application/json',
+                    'content-type': 'application/x-www-form-urlencoded'
+                }
+            })
+
+            var enc = new TextDecoder("utf-8");
+            var arr = new Uint8Array(response.data);
+
+            setLoading(false);
+            console.log(enc.decode(arr));
+            setResponseData(enc.decode(arr));
+        } catch (error) {
+            console.log(error);
+            setLoading(false);
+        }
+    }
+
     return (
         <>
             <Handle
@@ -71,36 +98,50 @@ function ConversationalNode({ data, id }) {
                 style={{ width: handleSize, height: handleSize }}
                 onConnect={(params) => console.log('handle target onConnect', params)}
             />
-            <div style={{ border: `2px solid ${baseColor}`, paddingBottom: 10, borderRadius: 5, width: 300 }}>
+            <div style={{ border: `2px solid ${baseColor}`, borderRadius: 5, width: 300 }}>
                 <div style={{ display: 'flex', justifyContent: 'center', borderBottom: `2px solid ${baseColor}`, background: baseColor, padding: 8 }}>
                     <Text color='white' weight={800} size='xl'>{model.name}</Text>
                 </div>
-                <div style={{ padding: 8 }}>
-                    {data.sourceData && data.sourceData[0].name}
-                    {/* <Group position='apart' style={{ padding: 8 }}>
-                        <Text>Seed</Text>
-                        <TextInput />
-                    </Group> */}
+                <div style={{ padding: 8, flex: 1 }}>
+                    <div>
+                        <Textarea
+                            minRows={4}
+                            value={chatData}
+                            onChange={(ev) => setChatData(ev.target.value)}
+                        />
+                    </div>
                 </div>
                 <div style={{ display: 'flex', flex: 1, justifyContent: 'center' }}>
                     <Button
                         variant="outline"
                         style={{ width: 150, borderColor: baseColor, color: baseColor }}
-                        onClick={() => processConversation()}
-                        disabled={!data.sourceData}
+                        onClick={() => processChatGPT()}
+                        disabled={!chatData}
                     >
-                        {loading ? <Loader variant="bars" size="xs" color='yellow' /> : 'Apply'}
+                        {loading ? <Loader variant="bars" size="xs" color='red' /> : 'Apply'}
                     </Button>
                 </div>
-                {responseText && (
+                {responseData && (
                     <div style={{ padding: 10 }}>
                         <Textarea
-                            minRows={5}
-                            value={responseText}
-                            onChange={(ev) => setResponseText(ev.target.value)}
+                            minRows={8}
+                            value={responseData}
+                            onChange={(ev) => setResponseData(ev.target.value)}
                         />
                     </div>
                 )}
+                <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', background: baseColor, marginTop: 10 }}>
+                    <Text color='white' weight={500}>Powered by</Text>
+                    <Text
+                        weight={500}
+                        color='white'
+                        style={{ textAlign: 'center' }}
+                    >
+                        Open AI
+                        <br />
+                        ChatGPT
+                    </Text>
+                </div>
             </div>
             <Handle
                 type="source"
@@ -112,4 +153,4 @@ function ConversationalNode({ data, id }) {
     );
 }
 
-export default ConversationalNode;
+export default TranslationNode;

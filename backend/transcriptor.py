@@ -8,7 +8,7 @@ def save_mp3(mp3) -> str:
     return path
 
 
-def transcribe(audio_mp3, api_key: str) -> str:  # TODO refactor this as an interface
+def transcribe(audio_mp3, api_key: str, lang_code: str = 'en') -> str:  # TODO refactor this as an interface
     # Save MP3 file
     path_audio = save_mp3(audio_mp3)
 
@@ -22,7 +22,7 @@ def transcribe(audio_mp3, api_key: str) -> str:  # TODO refactor this as an inte
     upload_url = utils.upload_file(path_audio, header)
 
     # Request a transcription
-    transcript_response = utils.request_transcript(upload_url, header)
+    transcript_response = utils.request_transcript(upload_url, lang_code, header)
 
     # Create a polling endpoint that will let us check when the transcription is complete
     polling_endpoint = utils.make_polling_endpoint(transcript_response)
