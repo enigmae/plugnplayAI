@@ -38,5 +38,3 @@ $ npm start
 https://www.assemblyai.com/blog/assemblyai-and-python-in-5-minutes/
 
 https://platform.stability.ai/docs/features/text-to-image
-
-https://github.com/rawandahmad698/PyChatGPT
