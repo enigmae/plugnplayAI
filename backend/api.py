@@ -62,12 +62,12 @@ async def question_answering(question: str):
 
 
 @app.post("/generate_image")
-async def generate_image(prompt: str):
+async def generate_image(prompt: str, seed: int, steps: int, cfg_scale: float):
     """
     Generate an image from some text.
     """
     api_key = 'sk-3DEERMlkvdTymBFocEI9uGlEV610ro1hL3MgzfYQ7zhCnsKX'  # TODO pass this token as a secret
-    image_bytes: bytes = _generate_image(prompt, api_key)
+    image_bytes: bytes = _generate_image(prompt, api_key, seed, steps, cfg_scale)
     return Response(content=image_bytes, media_type="image/png")
 
 
