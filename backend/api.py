@@ -1,10 +1,12 @@
-from fastapi import FastAPI, Response, UploadFile
+from fastapi import FastAPI, Response, UploadFile, File
 from transcriptor import transcribe as _transcribe
 from text2text_transformer import Flan_T5_Transformer
-# from chatGPT import ask
+from chatGPT import ask
 from image_generator import generate_image as _generate_image
 from text2speech import fastspeech
 from fastapi.middleware.cors import CORSMiddleware
+from IPython.display import Audio
+
 
 app = FastAPI()
 huggingface_api_key = "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"  # TODO pass this token as a secret
@@ -79,9 +81,15 @@ async def generate_image(prompt: str, seed: int, steps: int, cfg_scale: float):
     return Response(content=image_bytes, media_type="image/png")
 
 
-@app.post("/text2speech", response_model=str)
+@app.post("/text2speech")
 async def text2speech(text: str):
     """
     Convert text to speech
     """
-    return fastspeech(text, huggingface_api_key)
+    sound_file = fastspeech(text, huggingface_api_key)
+
+    with open(sound_file, "rb") as f:
+        audio = f.read()
+    # use the IPython.display.Audio class to play the audio file
+    return audio, 200, {"Content-Type": "audio/mp3"}
+

@@ -8,7 +8,7 @@ def fastspeech(text: str, api_key: str):
 
     # Request a speech
     response = request_response(API_URL, headers=headers, json=input)
-    with open("out.flac", "wb") as f:
+    with open("out.mp3", "wb") as f:
         f.write(response.content)
 
-    return "/backend/out.flac"
+    return r'C:\Users\ariji\PycharmProjects\plugnplayAI\backend\out.mp3'
