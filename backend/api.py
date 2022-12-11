@@ -43,7 +43,7 @@ async def translate(text_file: str, language: str):
     Translate some text.
     """
     prefix = "translate English to {}: ".format(language)
-    return Flan_T5_Transformer(prefix + text_file, huggingface_api_key)
+    return Flan_T5_Transformer(text_file, prefix, huggingface_api_key)
 
 
 @app.post("/question", response_model=str)
@@ -51,8 +51,8 @@ async def flan_question_answering(text_file: str):
     """
     Answer a question
     """
-    prefix = "Please answer the question."
-    return Flan_T5_Transformer(prefix + text_file, huggingface_api_key)
+    prefix = "Please answer the question: "
+    return Flan_T5_Transformer(text_file, prefix, huggingface_api_key)
 
 
 @app.post("/summarize", response_model=str)
@@ -61,7 +61,7 @@ async def summarize(text_file):
     Summarize some text.
     """
     prefix = "summarize: "
-    return Flan_T5_Transformer(prefix + text_file, huggingface_api_key)
+    return Flan_T5_Transformer(text_file, prefix, huggingface_api_key)
 
 
 @app.post("/chatbot", response_model=str)

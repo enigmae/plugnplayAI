@@ -1,6 +1,7 @@
 import requests
 import time
 import subprocess
+import re
 
 
 upload_endpoint = "https://api.assemblyai.com/v2/upload"
@@ -96,3 +97,12 @@ def from_bytes_to_file(input_bytes, output_file):
 
     with open(output_file, 'ab') as f:
         f.write(output_bytes)
+
+
+def split_text(text: str):
+    sentences = []
+
+    for element in [text]:
+        sentences += re.split("(?<=[.!?])\s+", element)
+
+    return sentences

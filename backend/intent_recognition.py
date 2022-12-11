@@ -4,9 +4,9 @@ from cohere.classify import Example
 co = cohere.Client('M0EkuRzkTT3Lu4FfylZcIcnzpcYTYxYO7xty4UDf')
 
 examples = [
-    Example("Do you offer same day shipping?", "Shipping and handling policy"),
-    Example("Can you ship to Italy?", "Shipping and handling policy"),
-    Example("How long does shipping take?", "Shipping and handling policy"),
+    Example("Could you summarize the text for me?", "Summarize"),
+    Example("What does this document say?", "Summarize"),
+    Example("Could you explain what the document is describing?", "Summarize"),
     Example("Can I buy online and pick up in store?", "Shipping and handling policy"),
     Example("What are your shipping options?", "Shipping and handling policy"),
     Example("My order arrived damaged, can I get a refund?", "Start return or exchange"),
