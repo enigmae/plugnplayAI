@@ -1,5 +1,9 @@
 # plugnplayAI
 
+Built during the AI Hackathon hosted by AssemblyAI
+
+https://hackathon.assemblyai.com/
+
 
 # Backend
 
