@@ -89,7 +89,7 @@ function SummarizationNode({ data, id }) {
                 style={{ width: handleSize, height: handleSize }}
                 onConnect={(params) => console.log('handle target onConnect', params)}
             />
-            <div style={{ border: `2px solid ${baseColor}`, borderRadius: 5, width: 300, paddingBottom: 10 }}>
+            <div style={{ border: `2px solid ${baseColor}`, borderRadius: 5, width: 300 }}>
                 <div style={{ display: 'flex', justifyContent: 'center', borderBottom: `2px solid ${baseColor}`, background: baseColor, padding: 8 }}>
                     <Text color='white' weight={800} size='xl'>{model.name}</Text>
                 </div>
@@ -121,6 +121,18 @@ function SummarizationNode({ data, id }) {
                         />
                     </div>
                 )}
+                <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', background: baseColor, marginTop: 10 }}>
+                    <Text color='white' weight={500}>Powered by</Text>
+                    <Text
+                        weight={500}
+                        color='white'
+                        style={{ textAlign: 'center' }}
+                    >
+                        HuggingFace
+                        <br />
+                        Google Flan-T5-Transformer
+                    </Text>
+                </div>
             </div>
             <Handle
                 type="source"

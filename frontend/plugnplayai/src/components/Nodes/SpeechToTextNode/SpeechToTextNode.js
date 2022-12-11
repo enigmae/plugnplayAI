@@ -82,7 +82,7 @@ function SpeechToTextNode({ data, id }) {
                 style={{ width: handleSize, height: handleSize }}
                 onConnect={(params) => console.log('handle target onConnect', params)}
             />
-            <div style={{ border: `2px solid ${baseColor}`, paddingBottom: 10, borderRadius: 5, width: 300 }}>
+            <div style={{ border: `2px solid ${baseColor}`, borderRadius: 5, width: 300 }}>
                 <div style={{ display: 'flex', justifyContent: 'center', borderBottom: `2px solid ${baseColor}`, background: baseColor, padding: 8 }}>
                     <Text color='white' weight={800} size='xl'>{model.name}</Text>
                 </div>
@@ -112,6 +112,16 @@ function SpeechToTextNode({ data, id }) {
                         />
                     </div>
                 )}
+                <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', background: baseColor, marginTop: 10 }}>
+                    <Text color='white' weight={500}>Powered by</Text>
+                    <Text
+                        weight={500}
+                        color='white'
+                        style={{ textAlign: 'center' }}
+                    >
+                        Assembly AI
+                    </Text>
+                </div>
             </div>
             <Handle
                 type="source"

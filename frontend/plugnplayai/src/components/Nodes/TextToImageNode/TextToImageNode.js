@@ -109,7 +109,7 @@ function TextToImageNode({ data, id }) {
                 style={{ width: handleSize, height: handleSize }}
                 onConnect={(params) => console.log('handle target onConnect', params)}
             />
-            <div style={{ border: `2px solid ${baseColor}`, paddingBottom: 10, borderRadius: 5, width: 300 }}>
+            <div style={{ border: `2px solid ${baseColor}`, borderRadius: 5, width: 300 }}>
                 <form>
                     <div style={{ display: 'flex', justifyContent: 'center', borderBottom: `2px solid ${baseColor}`, background: baseColor, padding: 8 }}>
                         <Text color='white' weight={800} size='xl'>{model.name}</Text>
@@ -161,6 +161,18 @@ function TextToImageNode({ data, id }) {
                         {/* <img style={{ height: 200, width: 200 }} src={responseImage} /> */}
                     </div>
                 )}
+                <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', background: baseColor, marginTop: 10 }}>
+                    <Text color='white' weight={500}>Powered by</Text>
+                    <Text
+                        weight={500}
+                        style={{ textAlign: 'center' }}
+                        color='white'
+                    >
+                        Stability AI
+                        <br />
+                        Stable Diffusion
+                    </Text>
+                </div>
             </div>
             <Handle
                 type="source"
