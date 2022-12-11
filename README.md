@@ -18,8 +18,6 @@ The swagger should be running at http://localhost:8000/docs
 
 Public endpoint running on an EC2 instance with SSL: https://18.193.101.239/docs
 
-Note: On Ubuntu make sure you got `sudo apt-get install portaudio19-dev` before installing `pyaudio`.
-
 
 # Frontend
 
