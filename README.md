@@ -1,6 +1,6 @@
 # plugnplayAI
 
-Use AI Models in a node-based no-code platform to create AI powered projects and workflows.
+Use AI models in a node-based no-code platform to create AI powered projects and workflows.
 
 Built during the AI Hackathon hosted by AssemblyAI
 
