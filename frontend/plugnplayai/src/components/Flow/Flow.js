@@ -123,7 +123,7 @@ function Flow() {
                         onEdgesChange={onEdgesChange}
                         onConnect={onConnect}
                     >
-                        <Background />
+                        <Background variant='lines' />
                         <Controls />
                     </ReactFlow>
                 </div>
