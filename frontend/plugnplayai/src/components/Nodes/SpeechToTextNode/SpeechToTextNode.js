@@ -20,21 +20,26 @@ function SpeechToTextNode({ data, id }) {
     }, [data])
 
     const processSpeech = async () => {
-        setLoading(true);
+        try {
+            setLoading(true);
 
-        var audioFile = data.sourceData;
-        const form = new FormData();
-        form.append('audio_mp3', audioFile[0]);
+            var audioFile = data.sourceData;
+            const form = new FormData();
+            form.append('audio_mp3', audioFile[0]);
 
-        const response = await axiosInstance.post('/transcribe', form, {
-            headers: {
-                'accept': 'application/json',
-                'Content-Type': 'multipart/form-data'
-            }
-        })
+            const response = await axiosInstance.post('/transcribe', form, {
+                headers: {
+                    'accept': 'application/json',
+                    'Content-Type': 'multipart/form-data'
+                }
+            })
 
-        setLoading(false);
-        setResponseText(response.data);
+            setLoading(false);
+            setResponseText(response.data);
+        } catch (error) {
+            console.log(error);
+            setLoading(false);
+        }
     }
 
     useEffect(() => {

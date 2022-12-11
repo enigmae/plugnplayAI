@@ -20,27 +20,32 @@ function TextToImageNode({ data, id }) {
     }, [data])
 
     const processTextToImage = async () => {
-        setLoading(true);
+        try {
+            setLoading(true);
 
-        const response = await axiosInstance.post('/generate_image', null, {
-            params: {
-                prompt: data.sourceData
-            },
-            responseType: 'arraybuffer',
-            headers: {
-                'accept': 'application/json',
-                'content-type': 'application/x-www-form-urlencoded'
-            }
-        })
+            const response = await axiosInstance.post('/generate_image', null, {
+                params: {
+                    prompt: data.sourceData
+                },
+                responseType: 'arraybuffer',
+                headers: {
+                    'accept': 'application/json',
+                    'content-type': 'application/x-www-form-urlencoded'
+                }
+            })
 
-        const imageData = btoa(
-            new Uint8Array(response.data)
-                .reduce((data, byte) => data + String.fromCharCode(byte), '')
-        );
-        // const image = "data:image/png;base64," + Buffer.from(response.data, 'binary').toString('base64');
-        setLoading(false);
-        setResponseImage(imageData);
-        console.log("success", imageData, response)
+            const imageData = btoa(
+                new Uint8Array(response.data)
+                    .reduce((data, byte) => data + String.fromCharCode(byte), '')
+            );
+            // const image = "data:image/png;base64," + Buffer.from(response.data, 'binary').toString('base64');
+            setLoading(false);
+            setResponseImage(imageData);
+            console.log("success", imageData, response)
+        } catch (error) {
+            console.log(error);
+            setLoading(false);
+        }
     }
 
     useEffect(() => {

@@ -17,26 +17,31 @@ function TranslationNode({ data }) {
     }, [data])
 
     const processTranslate = async () => {
-        setLoading(true);
+        try {
+            setLoading(true);
 
-        const response = await axiosInstance.post('/translate', null, {
-            params: {
-                text_file: data.sourceData,
-                language: 'german'
-            },
-            responseType: 'arraybuffer',
-            headers: {
-                'accept': 'application/json',
-                'content-type': 'application/x-www-form-urlencoded'
-            }
-        })
+            const response = await axiosInstance.post('/translate', null, {
+                params: {
+                    text_file: data.sourceData,
+                    language: 'german'
+                },
+                responseType: 'arraybuffer',
+                headers: {
+                    'accept': 'application/json',
+                    'content-type': 'application/x-www-form-urlencoded'
+                }
+            })
 
-        var enc = new TextDecoder("utf-8");
-        var arr = new Uint8Array(response.data);
+            var enc = new TextDecoder("utf-8");
+            var arr = new Uint8Array(response.data);
 
-        setLoading(false);
-        console.log(enc.decode(arr));
-        setResponseData(enc.decode(arr));
+            setLoading(false);
+            console.log(enc.decode(arr));
+            setResponseData(enc.decode(arr));
+        } catch (error) {
+            console.log(error);
+            setLoading(false);
+        }
     }
 
     return (
