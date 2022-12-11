@@ -45,7 +45,7 @@ const ModelNodes = [
     },
     {
         name: "Summarization",
-        type: 'SpeechToText',
+        type: 'Summarization',
         color: '#7676fc',
         icon: <ClipboardText
             size={25}
