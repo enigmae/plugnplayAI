@@ -1,4 +1,5 @@
 from utils import request_response
+import os
 
 
 def fastspeech(text: str, api_key: str):
@@ -11,4 +12,4 @@ def fastspeech(text: str, api_key: str):
     with open("out.mp3", "wb") as f:
         f.write(response.content)
 
-    return r'C:\Users\ariji\PycharmProjects\plugnplayAI\backend\out.mp3'
+    return os.path.abspath("out.mp3")
