@@ -26,6 +26,8 @@ $ npm install
 $ npm start
 ```
 
+![image](https://user-images.githubusercontent.com/33307/206912348-2f2b8f23-c26e-4824-a423-9243915d4a8e.png)
+
 
 # Resources
 
