@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Handle, Position, useEdges } from 'reactflow';
-import { Button, Group, Loader, Text, TextInput } from '@mantine/core';
+import { Button, Group, Loader, Text, Textarea, TextInput } from '@mantine/core';
 import axiosInstance from '../../../services/axiosInstance';
 import { useApp } from '../../../context/AppContext';
 
@@ -96,7 +96,7 @@ function TextToImageNode({ data, id }) {
                     {data.sourceData && data.sourceData[0].name}
                     <Group position='apart' style={{ padding: 8 }}>
                         <Text>Prompt</Text>
-                        <TextInput value={data.sourceData} />
+                        <Textarea minRows={4} value={data.sourceData} />
                     </Group>
                 </div>
                 <div style={{ display: 'flex', flex: 1, justifyContent: 'center' }}>

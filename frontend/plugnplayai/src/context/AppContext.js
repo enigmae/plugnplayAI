@@ -59,21 +59,21 @@ const InputNodes = [
     {
         name: "Speech Input",
         type: 'SpeechInput',
-        color: '#ffaa00',
+        color: '#f656ff',
         icon: <Microphone
             size={25}
             strokeWidth={1.5}
-            color={'#ffaa00'}
+            color={'#f656ff'}
         />
     },
     {
         name: "Text Input",
         type: 'TextInput',
-        color: '#7dd279',
+        color: '#ff6532',
         icon: <FileText
             size={25}
             strokeWidth={1.5}
-            color={'#7dd279'}
+            color={'#ff6532'}
         />
     },
 ]
