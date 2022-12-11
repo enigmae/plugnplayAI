@@ -1,8 +1,17 @@
 import { Handle, Position, useEdges } from 'reactflow';
-import { Button, Group, Loader, LoadingOverlay, Text, Textarea, TextInput } from '@mantine/core';
+import { Button, Group, Loader, LoadingOverlay, Select, Text, Textarea, TextInput } from '@mantine/core';
 import { useEffect, useState } from 'react';
 import axiosInstance from '../../../services/axiosInstance';
 import { useApp } from '../../../context/AppContext';
+
+const options = [
+    { value: 'german', label: 'German' },
+    { value: 'spanish', label: 'Spanish' },
+    { value: 'ukrain', label: 'Ukrainian' },
+    { value: 'french', label: 'French' },
+    { value: 'italian', label: 'Italian' },
+    { value: 'polish', label: 'Polish' },
+];
 
 function TranslationNode({ data, id }) {
     const { setAppState } = useApp()
@@ -12,11 +21,15 @@ function TranslationNode({ data, id }) {
 
     const [loading, setLoading] = useState(false);
     const [responseData, setResponseData] = useState(null);
+    const [translationData, setTranslationData] = useState('');
+    const [selectedLang, setSelectedLang] = useState('german');
 
     const edges = useEdges();
 
     useEffect(() => {
-        console.log(data)
+        if (data.sourceData) {
+            setTranslationData(data.sourceData);
+        }
     }, [data])
 
     useEffect(() => {
@@ -56,8 +69,8 @@ function TranslationNode({ data, id }) {
 
             const response = await axiosInstance.post('/translate', null, {
                 params: {
-                    text_file: data.sourceData,
-                    language: 'german'
+                    text_file: translationData,
+                    language: selectedLang
                 },
                 responseType: 'arraybuffer',
                 headers: {
@@ -95,16 +108,30 @@ function TranslationNode({ data, id }) {
                     <div>
                         <Textarea
                             minRows={4}
-                            value={data.sourceData ? data.sourceData : ''}
+                            value={translationData}
+                            onChange={(ev) => setTranslationData(ev.target.value)}
                         />
                     </div>
+                </div>
+                <div style={{ flex: 1, display: 'flex', justifyContent: 'flex-end', padding: 10 }}>
+                    <select
+                        onChange={(ev) => setSelectedLang(ev.target.value)}
+                        value={selectedLang}
+                        style={{ height: 30 }}
+                    >
+                        {options.map((option) => (
+                            <option key={option.value} value={option.value}>
+                                {option.label}
+                            </option>
+                        ))}
+                    </select>
                 </div>
                 <div style={{ display: 'flex', flex: 1, justifyContent: 'center' }}>
                     <Button
                         variant="outline"
                         style={{ width: 150, borderColor: baseColor, color: baseColor }}
                         onClick={() => processTranslate()}
-                        disabled={!data.sourceData}
+                        disabled={!translationData}
                     >
                         {loading ? <Loader variant="bars" size="xs" color='green' /> : 'Apply'}
                     </Button>
