@@ -1,7 +1,7 @@
 # plugnplayAI
 
 <p align="center">
-  <img src="https://github.com/joelescudefont/plugnplayAI/demo.gif?raw=true" alt="plugnplaing"/>
+  <img src="https://github.com/joelescudefont/plugnplayAI/blob/main/demo.gif?raw=true" alt="plugnplaing"/>
 </p>
 
 Use AI models in a node-based no-code platform to create AI powered projects and workflows.
