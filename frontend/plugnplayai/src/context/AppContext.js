@@ -1,6 +1,6 @@
 import React, { createContext, useCallback, useContext, useState } from 'react';
-import { AlphabetGreek, ClipboardText, FileText, MessageChatbot, Microphone, Microphone2, Mountain } from 'tabler-icons-react';
-import { ConversationalNode, SpeechInputNode, SpeechToTextNode, SummarizationNode, TextInputNode, TextToImageNode, TranslationNode } from '../components/Nodes';
+import { AlphabetGreek, ClipboardText, FileText, MessageChatbot, Microphone, Microphone2, Mountain, QuestionMark } from 'tabler-icons-react';
+import { ConversationalNode, QnANode, SpeechInputNode, SpeechToTextNode, SummarizationNode, TextInputNode, TextToImageNode, TranslationNode } from '../components/Nodes';
 
 const ModelNodes = [
     {
@@ -21,6 +21,16 @@ const ModelNodes = [
             size={25}
             strokeWidth={1.5}
             color={'#7dd279'}
+        />
+    },
+    {
+        name: "Q&A",
+        type: 'QnA',
+        color: '#384bff',
+        icon: <QuestionMark
+            size={25}
+            strokeWidth={1.5}
+            color={'#384bff'}
         />
     },
     {
@@ -82,6 +92,7 @@ const nodeTypes = {
     // Model Nodes
     SpeechToText: SpeechToTextNode,
     Translation: TranslationNode,
+    QnA: QnANode,
     TextToImage: TextToImageNode,
     Conversational: ConversationalNode,
     Summarization: SummarizationNode,

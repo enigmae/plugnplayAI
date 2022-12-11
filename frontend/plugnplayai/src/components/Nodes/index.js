@@ -1,5 +1,6 @@
 import SpeechToTextNode from "./SpeechToTextNode/SpeechToTextNode";
 import TranslationNode from "./TranslationNode/TranslationNode";
+import QnANode from "./QnANode/QnANode";
 import TextToImageNode from "./TextToImageNode/TextToImageNode";
 import SummarizationNode from "./SummarizationNode/SummarizationNode";
 import ConversationalNode from "./ConversationalNode/ConversationalNode";
@@ -10,6 +11,7 @@ import SpeechInputNode from "./InputNodes/SpeechInputNode/SpeechInputNode";
 export {
     SpeechToTextNode,
     TranslationNode,
+    QnANode,
     TextToImageNode,
     SummarizationNode,
     ConversationalNode,
