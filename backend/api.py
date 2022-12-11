@@ -29,12 +29,12 @@ async def get_health():
 
 
 @app.post("/transcribe", response_model=str)
-async def transcribe(audio_mp3: UploadFile):
+async def transcribe(audio_mp3: UploadFile, lang_code: str = 'en'):
     """
     Transcribe an MP3 file.
     """
     api_key = 'b2bcc06df08d4245950139b798fd5e36'  # TODO pass this token as a secret
-    return _transcribe(audio_mp3.file.read(), api_key)
+    return _transcribe(audio_mp3.file.read(), api_key, lang_code)
 
 
 @app.post("/translate", response_model=str)

@@ -28,9 +28,10 @@ def upload_file(audio_file, header):
 
 
 # Request transcript for file uploaded to AAI servers
-def request_transcript(upload_url, header):
+def request_transcript(upload_url, lang_code, header):
     transcript_request = {
-        'audio_url': upload_url['upload_url']
+        'audio_url': upload_url['upload_url'],
+        'language_code': lang_code
     }
     transcript_response = requests.post(
         transcript_endpoint,
